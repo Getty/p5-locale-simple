@@ -1,5 +1,5 @@
 package Locale::Simple;
-# ABSTRACT: Functions for translate text based on gettext data
+# ABSTRACT: Functions for translate text based on gettext data, also in JavaScript
 
 use strict;
 use warnings;
@@ -116,3 +116,86 @@ sub ltd {
 }
 
 1;
+
+=encoding utf8
+
+=head1 SYNOPSIS
+
+  use Locale::Simple;
+
+  l_dir('data/locale');
+  ltd('test');
+  l_lang('de_DE');
+
+  print l("Hello"); # "Hallo"
+  print ln("You have %d message","You have %d messages",4); # 'Du hast 4 Nachrichten'
+
+Usage in JavaScript:
+
+  <script language="javascript" src="../../share/js/sprintf.js"></script>
+  <script language="javascript" src="../../share/js/gettext/Gettext.js"></script>
+  <script language="javascript" src="../../share/js/locale_simple.js"></script>
+  <script language="javascript" src="locale/de_DE/LC_MESSAGES/test.json"></script>
+
+  ltd('test');
+
+  l("Hello");
+  ln("You have %d message","You have %d messages",4);
+
+Sample PO file, in this case data/locale/test.po
+
+  msgid ""
+  msgstr ""
+  "Language: de_DE\n"
+  "MIME-Version: 1.0\n"
+  "Content-Type: text/plain; charset=UTF-8\n"
+  "Content-Transfer-Encoding: 8bit\n"
+  "Plural-Forms: nplurals=2; plural=n != 1;"
+
+  msgid "You have %d message"
+  msgid_plural "You have %d messages"
+  msgstr[0] "Du hast %d Nachricht"
+  msgstr[1] "Du hast %d Nachrichten"
+
+  msgid "Hello"
+  msgstr "Hallo"
+
+=head1 DESCRIPTION
+
+This is a small wrapper around Gettext functionality that integrates sprintf and makes
+it a bit more easy to setup the internationalization. It ONLY supports UTF8 data, and in
+or output, that is a fixed setup (and always will be).
+
+Gettext in Perl requires compiled po files, so called mo files. You can generate those
+with the following command (if you have gettext in general installed on your system):
+
+  msgfmt -o data/locale/test.mo data/locale/test.po
+
+The Gettext implementation in JavaScript which is wrapped, requires a json file to be
+generated out of the po. This can be achieved with po2json which is delivered with
+this package. Sadly it only generates the json and doesnt integrate it into the
+translation storage in the JavaScript. To generate this you can do:
+
+  echo -n "locale_data['test'] = " >data/locale/test.json
+  po2json data/locale/test.po >>data/locale/test.json
+  echo ";" >>data/locale/test.json
+
+B<WARNING> it could be that the way how to integrate this in JavaScript might change
+in future version. Please check this place here on every upgrade for further informations.
+
+=head1 SEE ALSO
+
+=head2 L<Locale::Messages>
+
+=head1 SUPPORT
+
+Repository
+
+  http://github.com/Getty/p5-locale-simple
+  Pull request and additional contributors are welcome
+ 
+Issue Tracker
+
+  http://github.com/Getty/p5-locale-simple/issues
+
+
