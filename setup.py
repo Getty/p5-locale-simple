@@ -7,7 +7,7 @@ long_description = open('python/README.md').read()
 version = os.getenv('V', __version__)
 
 setup(name='locale-simple',
-      version=str(__version__),
+      version=str(version),
       py_modules=['locale_simple'],
       package_dir={'':'python'},
       description='Python port of Perl\'s Locale::Simple - Functions for translation of text based on gettext data',
