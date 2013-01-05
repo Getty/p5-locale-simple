@@ -1,9 +1,16 @@
 import sys, os
 
+global err
+err = 0
+
 def test(func): 
+    global err
     print(func.__name__ + '...')
-    try: func()
+    try: 
+        func()
+        print('\033[32mOK\033[0m\n')
     except BaseException as e:
+        err = 1
         print('\033[31m' + str(e) + '\033[0m')
 
 
@@ -15,6 +22,7 @@ def testeq(one, two):
 @test
 def test_import():
     from locale_simple import __all__
+    testeq(type(__all__), list)
 
 from locale_simple import *
 
@@ -65,3 +73,5 @@ def translate():
             lp("alien","Hello"),
             "Hallo Ausserirdischer"
             )
+
+exit(err)
