@@ -1,2 +1,6 @@
 Locale-Simple-*
 .build
+build/
+*.pyc
+dist/
+*.egg-info/
