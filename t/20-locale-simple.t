@@ -55,4 +55,10 @@ is(
 	"other changing position test"
 );
 
+is(
+	lp("alien","Hello"),
+	"Hallo Ausserirdischer",
+	"simple test with context"
+);
+
 done_testing;
