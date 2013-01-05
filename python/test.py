@@ -20,7 +20,7 @@ from locale_simple import *
 
 @test
 def setup():
-    l_dir(os.getcwd() + '/t/data/locale')
+    l_dir(os.path.dirname(os.path.abspath(__file__)) + '/../t/data/locale')
     ltd('test')
     l_lang('de_DE')
 
