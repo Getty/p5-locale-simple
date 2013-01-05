@@ -26,3 +26,6 @@ msgstr "Hallo"
 
 msgid "Change order test %s %s"
 msgstr "Andere Reihenfolge hier %2$s %1$s"
+
+msgid "Other change order test %s %s %s"
+msgstr "Verhalten aus http://perldoc.perl.org/functions/sprintf.html %3$s %s %1$s"

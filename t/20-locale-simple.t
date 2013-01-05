@@ -49,4 +49,10 @@ is(
 	"changing position test"
 );
 
+is(
+	l("Other change order test %s %s %s",1,2,3),
+	'Verhalten aus http://perldoc.perl.org/functions/sprintf.html 3 1 1',
+	"other changing position test"
+);
+
 done_testing;
