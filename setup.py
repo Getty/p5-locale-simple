@@ -1,7 +1,10 @@
 from setuptools import setup
 from python.locale_simple import __version__
+import os
 
 long_description = open('python/README.md').read()
+
+version = os.getenv('V', __version__)
 
 setup(name='locale-simple',
       version=str(__version__),
