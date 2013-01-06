@@ -60,6 +60,16 @@ def translate():
             )
 
     testeq(
+            ln('%2$s brought %1$d message','%2$s brought %1$d messages',1,'harry'),
+            '1 Nachricht gebracht von harry'
+            )
+
+    testeq(
+            ln('%2$s has %1$d message','%2$s has %1$d messages',4,'harry'),
+            'harry hat 4 Nachrichten'
+            )
+
+    testeq(
             l("Change order test %s %s", 'one', 'two'),
             "Andere Reihenfolge hier two one"
             )

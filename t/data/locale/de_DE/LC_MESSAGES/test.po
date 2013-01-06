@@ -21,6 +21,16 @@ msgid_plural "You have %d messages of %s"
 msgstr[0] "Du hast %d Nachricht von %s"
 msgstr[1] "Du hast %d Nachrichten von %s"
 
+msgid "%2$s brought %1$d message"
+msgid_plural "%2$s brought %1$d messages"
+msgstr[0] "%d Nachricht gebracht von %s"
+msgstr[1] "%d Nachrichten gebracht von %s"
+
+msgid "%2$s has %1$d message"
+msgid_plural "%2$s has %1$d messages"
+msgstr[0] "%2$s hat %1$d Nachricht"
+msgstr[1] "%2$s hat %1$d Nachrichten"
+
 msgid "Hello"
 msgstr "Hallo"
 
