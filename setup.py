@@ -1,11 +1,10 @@
 from setuptools import setup
-from python.locale_simple import __version__
 import os, sys
 
 long_description = open('python/README.md').read()
 
 version = os.getenv('V')
-if not version and 'bdist' in sys.argv: raise ValueError('You must set the environmental variable $V (the version number) to release.')
+if not version and ('bdist' in sys.argv or 'sdist' in sys.argv): raise ValueError('You must set the environmental variable $V (the version number) to release.')
 
 setup(name='locale-simple',
       version=str(version),
