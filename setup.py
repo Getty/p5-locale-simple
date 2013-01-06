@@ -1,7 +1,8 @@
 from setuptools import setup
 import os, sys
 
-long_description = open('python/README.md').read()
+if os.path.isdir('python'): long_description = open('python/README.md').read()
+else: long_description = open('README.md').read()
 
 version = os.getenv('V')
 if not version and ('bdist' in sys.argv or 'sdist' in sys.argv): raise ValueError('You must set the environmental variable $V (the version number) to release.')
