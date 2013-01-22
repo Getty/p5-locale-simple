@@ -14,6 +14,9 @@
   locale_simple_scraper --output yaml
   locale_simple_scraper --output json
 
+  # scramble real filename with md5 (for security)
+  locale_simple_scraper --md5
+
   # setting additional extensions for Javascript (default: js)
   locale_simple_scraper --js jjs,ajs
 
@@ -73,6 +76,7 @@ my $tx_ext = ""; # Text::Xslate (Kolon or Metakolon)
 my @ignores;
 
 my $output = 'po';
+my $md5;
 
 GetOptions(
 	"js=s" => \$js_ext,
@@ -81,6 +85,7 @@ GetOptions(
 	"tx=s" => \$tx_ext,
 	"ignore=s" => \@ignores,
 	"output=s" => \$output,
+	"md5" => \$md5,
 );
 
 # could add Getopt::Long here for override
@@ -131,6 +136,15 @@ $re_dir =~ s/\./\\./g;
 
 finddepth(sub {
 	my $filename = $File::Find::name;
+	my $stored_filename = $filename;
+	if ($md5) {
+		eval {
+			require Digest::MD5;
+			Digest::MD5->import('md5_hex');
+		};
+		die "This feature requires Digest::MD5" if $@;
+		$stored_filename = md5_hex($filename);
+	}
 	$filename =~ s/^$dir\///g;
 	for (@ignores) {
 		return if $filename =~ /$_/;
@@ -150,7 +164,7 @@ finddepth(sub {
 				push @found, {
 					%{$_},
 					line => $line,
-					file => $filename,
+					file => $stored_filename,
 					type => $type,
 				}
 			}
