@@ -101,10 +101,11 @@ sub ldnp {
 		}
 		$return = sprintf($idp && $n != 1 ? $idp : $id, @args);
 	} else {
-		$return = sprintf(dnpgettext($td, $ctxt, $id, $idp, $n),@args);
+		my $gt = dnpgettext($td, $ctxt, $id, $idp, $n);
+		# Fixing bad utf8 handling
+		utf8::decode($gt);
+		$return = sprintf($gt,@args);
 	}
-	# Fixing bad utf8 handling
-	utf8::decode($return);
 	return $return;
 }
 
