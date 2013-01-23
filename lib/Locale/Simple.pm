@@ -101,6 +101,8 @@ sub ldnp {
 		}
 		$return = sprintf($idp && $n != 1 ? $idp : $id, @args);
 	} else {
+		# L::TD handles msg ids as bytes internally
+		utf8::encode($id);
 		my $gt = dnpgettext($td, $ctxt, $id, $idp, $n);
 		# Fixing bad utf8 handling
 		utf8::decode($gt);
