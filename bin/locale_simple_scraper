@@ -193,7 +193,7 @@ if ($output eq 'po') {
 		for (qw( msgctxt msgid msgid_plural )) {
 			print $_.' "'.Locale::Simple::gettext_escape($token{$k}{$_}).'"'."\n" if defined $token{$k}{$_};
 		}
-		print q[msgstr ""\n];
+		print qq[msgstr ""\n];
 	}
 } elsif ($output eq 'perl') {
 	print Dumper \@found;
