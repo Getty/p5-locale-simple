@@ -46,6 +46,14 @@ sub gettext_escape {
 	return $content;
 }
 
+sub sprintf_compare {
+	my ( $first, $second ) = @_;
+	my $re = qr/(?:%%|%(?:[0-9]+\$)?[+-]?(?:[ 0]|\'.)?-?[0-9]*(?:\.[0-9]+)?[bcdeufFosxX])/;
+	my @placeholder_first = sort { $a cmp $b } map { my @chars = split(//,$_); pop @chars; } ($first =~ m/$re/g);
+	my @placeholder_second = sort { $a cmp $b } map { my @chars = split(//,$_); pop @chars; } ($second =~ m/$re/g);
+	return join("",@placeholder_first) eq join("",@placeholder_second);
+}
+
 sub coderef_hash {{
 	l => sub { l(@_) },
 	ln => sub { ln(@_) },
