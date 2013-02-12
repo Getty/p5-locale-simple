@@ -2,7 +2,7 @@
 # PODNAME: locale_simple_scraper
 # ABSTRACT: Command line tool for finding tokens in code
 
-=head1 SYNPOSIS
+=head1 SYNOPSIS
 
   # ignoring specific regexps
   # please be aware that you must escape the . and because we use bash here you
