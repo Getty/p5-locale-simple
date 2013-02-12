@@ -237,6 +237,16 @@ sub parse_line {
 			}
 		}
 	}
+	if(!@results) {
+		for (keys %f) {
+			my @args = @{$f{$_}};
+			for ($line =~ /[^\w]${_}\((.*)/) {
+				my $argc = scalar @args;
+				my ( $remainder, @params ) = parse_params($1, $type, $argc);
+				die "incomplete token:\n$line" if scalar @params != $argc;
+			}
+		}
+	}
 	return @results;
 }
 
