@@ -6,7 +6,7 @@ use warnings;
 
 use Exporter 'import';
 use Locale::gettext_pp qw(:locale_h :libintl_h);
-
+use POSIX qw' setlocale ';
 use IO::All -utf8;
 
 our @EXPORT = qw(
@@ -69,9 +69,10 @@ sub l_dir { $dir = shift }
 
 sub l_lang {
 	my $primary = shift;
-	$ENV{LANG} = $primary;
+	$ENV{LANG} = $primary;		# unsure if these ENV assignments are still needed with the setlocale below
 	$ENV{LANGUAGE} = $primary;
 	$ENV{LC_ALL} = $primary;
+	setlocale( LC_MESSAGES, $primary ) if eval { LC_MESSAGES }; # set locale for messages if the system supports it
 }
 
 # write dry
