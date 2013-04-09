@@ -167,6 +167,7 @@ finddepth(sub {
 		my $file = $File::Find::name;
 		my $type = $e{$ext};
 		print STDERR $type." => ".$file."\n";
+		return if -l $file and not -e readlink($file);
 		my @lines = io($file)->slurp;
 		my $line = 0;
 		for (@lines) {
@@ -246,16 +247,6 @@ sub parse_line {
 					$pos++;
 				}
 				push @results, \%result, parse_line( $remainder, $type );
-			}
-		}
-	}
-	if(!@results) {
-		for (keys %f) {
-			my @args = @{$f{$_}};
-			for ($line =~ /[^\w]${_}\((.*)/) {
-				my $argc = scalar @args;
-				my ( $remainder, @params ) = parse_params($1, $type, $argc);
-				die "incomplete token:\n$line" if scalar @params != $argc;
 			}
 		}
 	}
