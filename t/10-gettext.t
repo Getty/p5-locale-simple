@@ -6,7 +6,7 @@ use Test::More;
 
 use FindBin qw($Bin);
 
-use Locale::gettext_pp qw(:locale_h :libintl_h);
+use Locale::gettext_dumb qw(:locale_h :libintl_h);
 
 bindtextdomain('test',$Bin.'/data/locale');
 bind_textdomain_codeset('test','utf-8');
