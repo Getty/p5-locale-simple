@@ -190,24 +190,30 @@ sub parse_line {
     return if $line =~ /^\s*\#.*/;
     for ( keys %{$f} ) {
         my @args = @{ $f->{$_} };
-        for ( $line =~ /[^\w]${_}\((.*)/ ) {
-            my $argc = scalar @args;
-            my ( $remainder, @params ) = parse_params( $1, $type, $argc );
-            if ( scalar @params == $argc ) {
-                my %result;
-                my $pos = 0;
-                for ( @args ) {
-                    $result{msgid}        = $params[$pos] if $_ eq 1;
-                    $result{msgid_plural} = $params[$pos] if $_ eq 2;
-                    $result{msgctxt}      = $params[$pos] if $_ eq 3;
-                    $result{domain}       = $params[$pos] if $_ eq 4;
-                    $pos++;
-                }
-                push @results, \%result, parse_line( $remainder, $type, $f );
+        my $params = get_func_params( $_, $line );
+        next if !$params;
+        my $argc = scalar @args;
+        my ( $remainder, @params ) = parse_params( $params, $type, $argc );
+        if ( scalar @params == $argc ) {
+            my %result;
+            my $pos = 0;
+            for ( @args ) {
+                $result{msgid}        = $params[$pos] if $_ eq 1;
+                $result{msgid_plural} = $params[$pos] if $_ eq 2;
+                $result{msgctxt}      = $params[$pos] if $_ eq 3;
+                $result{domain}       = $params[$pos] if $_ eq 4;
+                $pos++;
             }
+            push @results, \%result, parse_line( $remainder, $type, $f );
         }
     }
     return @results;
+}
+
+sub get_func_params {
+    my ( $func, $line ) = @_;
+    $line =~ /([^\w]|^)$func\((.*)/;
+    return $2;
 }
 
 sub parse_params {
