@@ -159,7 +159,9 @@ sub scrape {
                 print $_. ' "' . Locale::Simple::gettext_escape( $token{$k}{$_} ) . '"' . "\n"
                   if defined $token{$k}{$_};
             }
-            print qq[msgstr ""\n];
+            my $plural_marker = $token{$k}{msgid_plural} ? "[0]" : "";
+            print qq[msgstr$plural_marker ""\n];
+
         }
     }
     elsif ( $output eq 'perl' ) {
