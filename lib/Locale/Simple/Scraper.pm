@@ -229,7 +229,7 @@ sub parse_params {
             if ( $c eq '\\' ) {
                 my $esc = shift @chars;
                 if ( $esc eq "'" or $esc eq '"' or $esc eq '\\' ) {
-                    $arg .= $c;
+                    $arg .= $esc;
                 }
                 else {
                     warn "Unknown escape char '" . $esc . "'";
