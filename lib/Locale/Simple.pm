@@ -41,6 +41,7 @@ sub l_dry { $dry = shift; $nowrite = shift; $nolocales = 1 if $dry }
 
 sub gettext_escape {
 	my ( $content ) = @_;
+	$content =~ s/\\/\\\\/g;
 	$content =~ s/\n/\\n/g;
 	$content =~ s/"/\\"/g;
 	return $content;
