@@ -98,7 +98,7 @@ sub double_quote_string_contents {
     my $elements = $self->sequence_of(
         sub {
             $self->any_of(
-                sub { $self->expect( qr/[\$\-\%\w ']+/ ); },
+                sub { $self->expect( qr/[^\\"]+/ ); },
                 sub {
                     $self->expect( qr/\\"/ );
                     '"';
@@ -116,7 +116,7 @@ sub single_quote_string_contents {
     my $elements = $self->sequence_of(
         sub {
             $self->any_of(
-                sub { $self->expect( qr/[\$\-\%\w "]+/ ); },
+                sub { $self->expect( qr/[^\\']+/ ); },
                 sub {
                     $self->expect( qr/\\'/ );
                     "'";
