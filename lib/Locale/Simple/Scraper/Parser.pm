@@ -43,7 +43,11 @@ sub parse_call {
     my $func = $self->expect( $self->func_qr );
     $self->debug( "found func $func at line %d", ( $self->where )[0] );
 
-    try { $self->parse_valid_call( $func ) } catch { $self->report_failure( $_ ) };
+    try { $self->parse_valid_call( $func ) }
+    catch {
+        die $_ if !eval { $_->isa( "Parser::MGC::Failure" ) };
+        $self->report_failure( $_ );
+    };
 
     return;
 }
