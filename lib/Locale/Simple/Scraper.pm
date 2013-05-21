@@ -197,19 +197,24 @@ sub parse_line {
         my $argc = scalar @args;
         my ( $remainder, @params ) = parse_params( $params, $type, $argc );
         if ( scalar @params == $argc ) {
-            my %result;
-            my $pos = 0;
-            for ( @args ) {
-                $result{msgid}        = $params[$pos] if $_ eq 1;
-                $result{msgid_plural} = $params[$pos] if $_ eq 2;
-                $result{msgctxt}      = $params[$pos] if $_ eq 3;
-                $result{domain}       = $params[$pos] if $_ eq 4;
-                $pos++;
-            }
-            push @results, \%result, parse_line( $remainder, $type, $f );
+            push @results, result_from_params( \@params, \@args ), parse_line( $remainder, $type, $f );
         }
     }
     return @results;
+}
+
+sub result_from_params {
+    my ( $params, $args ) = @_;
+    my %result;
+    my $pos = 0;
+    for ( @{$args} ) {
+        $result{msgid}        = $params->[$pos] if $_ eq 1;
+        $result{msgid_plural} = $params->[$pos] if $_ eq 2;
+        $result{msgctxt}      = $params->[$pos] if $_ eq 3;
+        $result{domain}       = $params->[$pos] if $_ eq 4;
+        $pos++;
+    }
+    return \%result;
 }
 
 sub get_func_params {
