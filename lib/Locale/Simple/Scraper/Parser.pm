@@ -51,8 +51,6 @@ sub parse_call {
 sub parse_valid_call {
     my ( $self, $func ) = @_;
 
-    $self->commit;
-
     {    # force the debug output to point at the position after the func name
         local $self->{patterns}{ws} = qr//;
         $self->fail( "Expected \"(\"" ) if !$self->maybe_expect( "(" );
