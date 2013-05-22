@@ -46,10 +46,8 @@ sub call {
 sub arguments {
     my ( $self, $func ) = @_;
 
-    {    # force the debug output to point at the position after the func name
-        local $self->{patterns}{ws} = qr//;
-        $self->expect_string( "(" );
-    }
+    # with_ws forces the debug output to point at the position after the func name
+    $self->with_ws( expect_string => "(" );
 
     my $args_method = "required_args_$func";
     my @arguments = ( $self->$args_method, $self->extra_arguments );
@@ -95,8 +93,8 @@ sub constant_string {
     my $p = $self->{patterns};
 
     unshift @components,
-      $self->curry::scope_of( q["], sub { local $p->{ws} = qr//; $self->double_quote_string_contents }, q["] ),
-      $self->curry::scope_of( q['], sub { local $p->{ws} = qr//; $self->single_quote_string_contents }, q['] );
+      $self->curry::scope_of( q["], $self->c_with_ws( "double_quote_string_contents" ), q["] ),
+      $self->curry::scope_of( q['], $self->c_with_ws( "single_quote_string_contents" ), q['] );
 
     my $string = $self->list_of( $self->concat_op, $self->c_any_of( @components ) );
 
