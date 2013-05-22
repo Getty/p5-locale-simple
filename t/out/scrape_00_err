@@ -602,7 +602,7 @@ pl => /t/data/dummy.pl
 - found func l at line 10
 - found func l at line 10
 - found 1 arguments
-- found 1 arguments
+- found 2 arguments
 - discarded COUNT characters of noise
 - found func l at line 11
 - found 1 arguments

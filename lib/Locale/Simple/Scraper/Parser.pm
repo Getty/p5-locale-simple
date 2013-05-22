@@ -65,7 +65,8 @@ sub parse_valid_call {
     my @arguments   = $self->$args_method;
 
     while ( $self->maybe_expect( "," ) ) {
-        my $arg = $self->maybe(
+        my $extra_args = $self->list_of(
+            ",",
             sub {
                 $self->any_of(
                     sub { $self->parse_call },
@@ -75,8 +76,7 @@ sub parse_valid_call {
                 );
             }
         );
-        last if !$arg;
-        push @arguments, $arg;
+        push @arguments, @{$extra_args};
     }
 
     $self->fail( "Expected \")\"" ) if !$self->maybe_expect( ")" );
