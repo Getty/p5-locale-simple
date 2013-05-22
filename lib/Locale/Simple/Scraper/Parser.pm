@@ -17,7 +17,7 @@ with "Locale::Simple::Scraper::ParserShortcuts";
 
 sub parse {
     my ( $self ) = @_;
-    $self->sequence_of( $self->curry::any_of( $self->curry::noise, $self->curry::call ) );
+    $self->sequence_of( $self->c_any_of( $self->curry::noise, $self->curry::call ) );
     return $self->found;
 }
 
@@ -67,7 +67,7 @@ sub extra_arguments {
     return if !$self->maybe_expect( "," );
 
     my @types = ( $self->curry::call, $self->curry::dynamic_string, $self->curry::token_int, $self->curry::variable );
-    my $extra_args = $self->list_of( ",", $self->curry::any_of( @types ) );
+    my $extra_args = $self->list_of( ",", $self->c_any_of( @types ) );
     return @{$extra_args};
 }
 
@@ -98,7 +98,7 @@ sub constant_string {
       $self->curry::scope_of( q["], sub { local $p->{ws} = qr//; $self->double_quote_string_contents }, q["] ),
       $self->curry::scope_of( q['], sub { local $p->{ws} = qr//; $self->single_quote_string_contents }, q['] );
 
-    my $string = $self->list_of( $self->concat_op, $self->curry::any_of( @components ) );
+    my $string = $self->list_of( $self->concat_op, $self->c_any_of( @components ) );
 
     return join "", @{$string} if @{$string};
 
@@ -117,22 +117,22 @@ sub dynamic_string {
 
 sub double_quote_string_contents {
     my ( $self ) = @_;
-    return $self->string_contents( $self->curry::expect( qr/[^\\"]+/ ), $self->curry::expect_escaped( q["] ) );
+    return $self->string_contents( $self->c_expect( qr/[^\\"]+/ ), $self->c_expect_escaped( q["] ) );
 }
 
 sub single_quote_string_contents {
     my ( $self ) = @_;
     return $self->string_contents(
-        $self->curry::expect( qr/[^\\']+/ ),
-        $self->curry::expect_escaped( q['] ),
-        $self->curry::expect_escaped( q[\\] ),
-        $self->curry::expect( qr/\\/ )
+        $self->c_expect( qr/[^\\']+/ ),
+        $self->c_expect_escaped( q['] ),
+        $self->c_expect_escaped( q[\\] ),
+        $self->c_expect( qr/\\/ ),
     );
 }
 
 sub string_contents {
     my ( $self, @contents ) = @_;
-    my $elements = $self->sequence_of( $self->curry::any_of( @contents ) );
+    my $elements = $self->sequence_of( $self->c_any_of( @contents ) );
     return join "", @{$elements} if @{$elements};
     $self->fail( "no string contents found" );
 }

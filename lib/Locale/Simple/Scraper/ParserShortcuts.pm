@@ -28,7 +28,13 @@ sub named_token {
     return $token;
 }
 
-sub expect_escaped { $_[0]->expect( qr/\\\Q$_[1]\E/ ); $_[1] }
+sub c_expect_escaped {
+    my ( $self, $char ) = @_;
+    return sub {
+        $self->expect( qr/\\\Q$char\E/ );
+        return $char;
+    };
+}
 
 sub warn_failure {
     my ( $self, $f ) = @_;
@@ -39,6 +45,20 @@ sub warn_failure {
     $text   =~ s/\%/%%/g;
     $self->debug( "$f->{message}:\n |$text\n |$indent^" );
     return;
+}
+
+sub c_any_of {
+    my ( $self, @args ) = @_;
+    return sub {
+        $self->any_of( @args );
+    };
+}
+
+sub c_expect {
+    my ( $self, @args ) = @_;
+    return sub {
+        $self->expect( @args );
+    };
 }
 
 1;
