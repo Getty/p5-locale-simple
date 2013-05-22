@@ -49,8 +49,7 @@ sub arguments {
     # with_ws forces the debug output to point at the position after the func name
     $self->with_ws( expect_op => "(" );
 
-    my $args_method = "required_args_$func";
-    my @arguments = ( $self->$args_method, $self->extra_arguments );
+    my @arguments = ( $self->required_args( $func ), $self->extra_arguments );
 
     $self->expect_op( ")" );
 
@@ -69,23 +68,27 @@ sub extra_arguments {
     return @{$extra_args};
 }
 
-sub required_args_l    { shift->collect_from( qw( translation_token ) ) }
-sub required_args_ln   { shift->collect_from( qw( translation_token  comma  plural_args ) ) }
-sub required_args_lp   { shift->collect_from( qw( context_id         comma  translation_token ) ) }
-sub required_args_lnp  { shift->collect_from( qw( required_args_lp   comma  plural_args ) ) }
-sub required_args_ld   { shift->collect_from( qw( domain_id          comma  translation_token ) ) }
-sub required_args_ldn  { shift->collect_from( qw( domain_id          comma  required_args_ln ) ) }
-sub required_args_ldnp { shift->collect_from( qw( domain_id          comma  required_args_lnp ) ) }
+sub required_args {
+    my ( $self, $func ) = @_;
+    my %arg_lists = (
+        l    => [qw( tr_token )],
+        ln   => [qw( tr_token    comma  plural_token  comma  plural_count )],
+        lp   => [qw( context_id  comma  tr_token )],
+        lnp  => [qw( context_id  comma  tr_token      comma  plural_token  comma  plural_count )],
+        ld   => [qw( domain_id   comma  tr_token )],
+        ldn  => [qw( domain_id   comma  tr_token      comma  plural_token  comma  plural_count )],
+        ldnp => [qw( domain_id   comma  context_id    comma  tr_token      comma  plural_token  comma  plural_count )],
+    );
+    return $self->collect_from( $arg_lists{$func} );
+}
 
-sub plural_args { shift->collect_from( qw( plural_token  comma  plural_count ) ) }
-
-sub translation_token { shift->named_token( "translation token" ) }
-sub plural_token      { shift->named_token( "plural translation token" ) }
-sub plural_count      { shift->named_token( "count of plural entity", "token_int" ) }
-sub context_id        { shift->named_token( "context id" ) }
-sub domain_id         { shift->named_token( "domain id" ) }
-sub comma             { shift->expect_op( "," ) }
-sub variable          { shift->expect( qr/[\w\.]+/ ) }
+sub tr_token     { shift->named_token( "translation token" ) }
+sub plural_token { shift->named_token( "plural translation token" ) }
+sub plural_count { shift->named_token( "count of plural entity", "token_int" ) }
+sub context_id   { shift->named_token( "context id" ) }
+sub domain_id    { shift->named_token( "domain id" ) }
+sub comma        { shift->expect_op( "," ) }
+sub variable     { shift->expect( qr/[\w\.]+/ ) }
 
 sub constant_string {
     my ( $self, @components ) = @_;

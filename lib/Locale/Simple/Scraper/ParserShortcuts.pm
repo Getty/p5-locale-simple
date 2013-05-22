@@ -21,8 +21,8 @@ sub expect_op {
 }
 
 sub collect_from {
-    my ( $self, @methods ) = @_;
-    return map { $self->$_ } @methods;
+    my ( $self, $methods ) = @_;
+    return map { $self->$_ } @{$methods};
 }
 
 sub named_token {
