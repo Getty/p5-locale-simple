@@ -15,7 +15,8 @@ l("moo")
    "mo'o
    oooo"
    )
-;l(
+;l
+(
    "mo'o" .
    "oooo"
    )
