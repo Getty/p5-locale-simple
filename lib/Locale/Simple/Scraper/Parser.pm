@@ -7,6 +7,7 @@ use base qw( Parser::MGC );
 
 use Moo;
 use Try::Tiny;
+use curry;
 
 has func_qr => ( is => 'ro', default => sub { qr/\bl(|n|p|np|d|dn|dnp)\b/ } );
 has found   => ( is => 'ro', default => sub { [] } );
@@ -16,11 +17,7 @@ with "Locale::Simple::Scraper::ParserShortcuts";
 
 sub parse {
     my ( $self ) = @_;
-    $self->sequence_of(
-        sub {
-            $self->any_of( sub { $self->noise }, sub { $self->call } );
-        }
-    );
+    $self->sequence_of( $self->curry::any_of( $self->curry::noise, $self->curry::call ) );
     return $self->found;
 }
 
@@ -69,17 +66,8 @@ sub extra_arguments {
     my ( $self ) = @_;
     return if !$self->maybe_expect( "," );
 
-    my $extra_args = $self->list_of(
-        ",",
-        sub {
-            $self->any_of(
-                sub { $self->call },
-                sub { $self->dynamic_string },
-                sub { $self->token_int },
-                sub { $self->variable }
-            );
-        }
-    );
+    my @types = ( $self->curry::call, $self->curry::dynamic_string, $self->curry::token_int, $self->curry::variable );
+    my $extra_args = $self->list_of( ",", $self->curry::any_of( @types ) );
     return @{$extra_args};
 }
 
@@ -102,24 +90,15 @@ sub comma             { shift->expect_string( "," ); () }                       
 sub variable          { shift->expect( qr/[\w\.]+/ ) }
 
 sub constant_string {
-    my ( $self, @extra_components ) = @_;
+    my ( $self, @components ) = @_;
 
     my $p = $self->{patterns};
 
-    my $string = $self->list_of(
-        $self->concat_op,
-        sub {
-            my $string = $self->any_of(
-                sub {
-                    $self->scope_of( q["], sub { local $p->{ws} = qr//; $self->double_quote_string_contents }, q["] );
-                },
-                sub {
-                    $self->scope_of( q['], sub { local $p->{ws} = qr//; $self->single_quote_string_contents }, q['] );
-                },
-                @extra_components,
-            );
-        }
-    );
+    unshift @components,
+      $self->curry::scope_of( q["], sub { local $p->{ws} = qr//; $self->double_quote_string_contents }, q["] ),
+      $self->curry::scope_of( q['], sub { local $p->{ws} = qr//; $self->single_quote_string_contents }, q['] );
+
+    my $string = $self->list_of( $self->concat_op, $self->curry::any_of( @components ) );
 
     return join "", @{$string} if @{$string};
 
@@ -133,27 +112,27 @@ sub concat_op {
 
 sub dynamic_string {
     my ( $self ) = @_;
-    return $self->constant_string( sub { $self->variable } );
+    return $self->constant_string( $self->curry::variable );
 }
 
 sub double_quote_string_contents {
     my ( $self ) = @_;
-    return $self->string_contents( sub { $self->expect( qr/[^\\"]+/ ) }, sub { $self->expect_escaped( q["] ) }, );
+    return $self->string_contents( $self->curry::expect( qr/[^\\"]+/ ), $self->curry::expect_escaped( q["] ) );
 }
 
 sub single_quote_string_contents {
     my ( $self ) = @_;
     return $self->string_contents(
-        sub { $self->expect( qr/[^\\']+/ ) },
-        sub { $self->expect_escaped( q['] ) },
-        sub { $self->expect_escaped( q[\\] ) },
-        sub { $self->expect( qr/\\/ ) },
+        $self->curry::expect( qr/[^\\']+/ ),
+        $self->curry::expect_escaped( q['] ),
+        $self->curry::expect_escaped( q[\\] ),
+        $self->curry::expect( qr/\\/ )
     );
 }
 
 sub string_contents {
     my ( $self, @contents ) = @_;
-    my $elements = $self->sequence_of( sub { $self->any_of( @contents ) } );
+    my $elements = $self->sequence_of( $self->curry::any_of( @contents ) );
     return join "", @{$elements} if @{$elements};
     $self->fail( "no string contents found" );
 }
