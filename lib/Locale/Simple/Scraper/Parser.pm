@@ -47,12 +47,12 @@ sub arguments {
     my ( $self, $func ) = @_;
 
     # with_ws forces the debug output to point at the position after the func name
-    $self->with_ws( expect_string => "(" );
+    $self->with_ws( expect_op => "(" );
 
     my $args_method = "required_args_$func";
     my @arguments = ( $self->$args_method, $self->extra_arguments );
 
-    $self->expect_string( ")" );
+    $self->expect_op( ")" );
 
     $self->debug( "found %d arguments", scalar @arguments );
     push @{ $self->found }, { func => $func, args => \@arguments, line => ( $self->where )[0] };
@@ -84,7 +84,7 @@ sub plural_token      { shift->named_token( "plural translation token" ) }
 sub plural_count      { shift->named_token( "count of plural entity", "token_int" ) }
 sub context_id        { shift->named_token( "context id" ) }
 sub domain_id         { shift->named_token( "domain id" ) }
-sub comma             { shift->expect_string( "," ); () }                               # consume, no output
+sub comma             { shift->expect_op( "," ) }
 sub variable          { shift->expect( qr/[\w\.]+/ ) }
 
 sub constant_string {

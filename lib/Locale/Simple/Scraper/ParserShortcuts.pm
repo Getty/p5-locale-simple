@@ -14,7 +14,11 @@ has debug_sub => (
 
 sub debug { shift->debug_sub->( @_ ) }
 
-sub expect_string { $_[0]->maybe_expect( "$_[1]" ) or $_[0]->fail( "Expected \"$_[1]\"" ) }
+sub expect_op {
+    my ( $self, $op ) = @_;
+    return if $self->maybe_expect( "$op" );
+    $self->fail( "Expected \"$op\"" );
+}
 
 sub collect_from {
     my ( $self, @methods ) = @_;
