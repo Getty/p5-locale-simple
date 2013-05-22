@@ -95,12 +95,17 @@ msgstr ""
 msgid "mo\"ooooo"
 msgstr ""
 
+#: /t/data/dummy.pl:13 /t/data/dummy.pl:17
+#, locale-simple-format
+msgid "mo'o\n   oooo"
+msgstr ""
+
 #: /t/data/dummy.pl:4
 #, locale-simple-format
 msgid "mo'ooo"
 msgstr ""
 
-#: /t/data/dummy.pl:8
+#: /t/data/dummy.pl:8 /t/data/dummy.pl:21
 #, locale-simple-format
 msgid "mo'ooooo"
 msgstr ""

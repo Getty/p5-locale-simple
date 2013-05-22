@@ -606,6 +606,15 @@ pl => /t/data/dummy.pl
 - discarded 2 characters of noise
 - found func l at line 11
 - found 1 arguments
+- discarded 2 characters of noise
+- found func l at line 12
+- found 1 arguments
+- discarded 2 characters of noise
+- found func l at line 14
+- found 1 arguments
+- discarded 2 characters of noise
+- found func l at line 18
+- found 1 arguments
 tx => /t/data/dummy.tx
 - discarded 1 characters of noise
 - found func l at line 1
