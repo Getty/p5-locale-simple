@@ -22,16 +22,15 @@ sub debug { shift->debug_sub->( @_ ) }
 
 sub parse {
     my ( $self ) = @_;
-    $self->sequence_of( sub { $self->parse_item } );
+    $self->sequence_of(
+        sub {
+            $self->any_of( sub { $self->noise }, sub { $self->call } );
+        }
+    );
     return $self->found;
 }
 
-sub parse_item {
-    my ( $self ) = @_;
-    return $self->any_of( sub { $self->parse_noise }, sub { $self->parse_call } );
-}
-
-sub parse_noise {
+sub noise {
     my ( $self ) = @_;
     my $noise = $self->substring_before( $self->func_qr );
     $self->fail( "no noise found" ) if !length $noise;
@@ -39,47 +38,32 @@ sub parse_noise {
     return $noise;
 }
 
-sub parse_call {
+sub call {
     my ( $self ) = @_;
     my $func = $self->expect( $self->func_qr );
     $self->debug( "found func $func at line %d", ( $self->where )[0] );
 
-    try { $self->parse_valid_call( $func ) }
+    try { $self->arguments( $func ) }
     catch {
         die $_ if !eval { $_->isa( "Parser::MGC::Failure" ) };
-        $self->report_failure( $_ );
+        $self->warn_failure( $_ );
     };
 
     return;
 }
 
-sub parse_valid_call {
+sub arguments {
     my ( $self, $func ) = @_;
 
     {    # force the debug output to point at the position after the func name
         local $self->{patterns}{ws} = qr//;
-        $self->fail( "Expected \"(\"" ) if !$self->maybe_expect( "(" );
+        $self->expect_string( "(" );
     }
 
-    my $args_method = "parse_req_args_$func";
-    my @arguments   = $self->$args_method;
+    my $args_method = "required_args_$func";
+    my @arguments = ( $self->$args_method, $self->extra_arguments );
 
-    while ( $self->maybe_expect( "," ) ) {
-        my $extra_args = $self->list_of(
-            ",",
-            sub {
-                $self->any_of(
-                    sub { $self->parse_call },
-                    sub { $self->extended_complex_string },
-                    sub { $self->token_int },
-                    sub { $self->variable },
-                );
-            }
-        );
-        push @arguments, @{$extra_args};
-    }
-
-    $self->fail( "Expected \")\"" ) if !$self->maybe_expect( ")" );
+    $self->expect_string( ")" );
 
     $self->debug( "found %d arguments", scalar @arguments );
     push @{ $self->found }, { func => $func, args => \@arguments, line => ( $self->where )[0] };
@@ -87,48 +71,57 @@ sub parse_valid_call {
     return;
 }
 
+sub expect_string { $_[0]->maybe_expect( "$_[1]" ) or $_[0]->fail( "Expected \"$_[1]\"" ) }
+
+sub extra_arguments {
+    my ( $self ) = @_;
+    return if !$self->maybe_expect( "," );
+
+    my $extra_args = $self->list_of(
+        ",",
+        sub {
+            $self->any_of(
+                sub { $self->call },
+                sub { $self->dynamic_string },
+                sub { $self->token_int },
+                sub { $self->variable }
+            );
+        }
+    );
+    return @{$extra_args};
+}
+
+sub required_args_l    { shift->collect_from( qw( translation_token ) ) }
+sub required_args_ln   { shift->collect_from( qw( translation_token  comma  plural_args ) ) }
+sub required_args_lp   { shift->collect_from( qw( context_id         comma  translation_token ) ) }
+sub required_args_lnp  { shift->collect_from( qw( required_args_lp   comma  plural_args ) ) }
+sub required_args_ld   { shift->collect_from( qw( domain_id          comma  translation_token ) ) }
+sub required_args_ldn  { shift->collect_from( qw( domain_id          comma  required_args_ln ) ) }
+sub required_args_ldnp { shift->collect_from( qw( domain_id          comma  required_args_lnp ) ) }
+
+sub plural_args { shift->collect_from( qw( plural_token  comma  plural_count ) ) }
+
 sub collect_from {
     my ( $self, @methods ) = @_;
     return map { $self->$_ } @methods;
 }
 
-sub parse_req_args_l    { shift->collect_from( qw( translation_token ) ) }
-sub parse_req_args_ln   { shift->collect_from( qw( translation_token  comma  plural_args ) ) }
-sub parse_req_args_lp   { shift->collect_from( qw( context_id         comma  translation_token ) ) }
-sub parse_req_args_lnp  { shift->collect_from( qw( parse_req_args_lp  comma  parse_plural_args ) ) }
-sub parse_req_args_ld   { shift->collect_from( qw( domain_id          comma  translation_token ) ) }
-sub parse_req_args_ldn  { shift->collect_from( qw( domain_id          comma  parse_req_args_ln ) ) }
-sub parse_req_args_ldnp { shift->collect_from( qw( domain_id          comma  parse_req_args_lnp ) ) }
+sub translation_token { shift->named_token( "translation token" ) }
+sub plural_token      { shift->named_token( "plural translation token" ) }
+sub plural_count      { shift->named_token( "count of plural entity", "token_int" ) }
+sub context_id        { shift->named_token( "context id" ) }
+sub domain_id         { shift->named_token( "domain id" ) }
+sub comma             { shift->expect_string( "," ); () }                               # consume, no output
+sub variable          { shift->expect( qr/[\w\.]+/ ) }
 
-sub plural_args { shift->collect_from( qw( plural_translation_token  comma  plural_count ) ) }
-
-sub named_arg_token {
+sub named_token {
     my ( $self, $name, $type ) = @_;
-    $type ||= "complex_string";
+    $type ||= "constant_string";
     my $token = $self->maybe( sub { $self->$type } ) or $self->fail( "Expected $name" );
     return $token;
 }
 
-sub translation_token        { shift->named_arg_token( "translation token" ) }
-sub plural_translation_token { shift->named_arg_token( "plural translation token" ) }
-sub plural_count             { shift->named_arg_token( "count of plural entity", "token_int" ) }
-sub context_id               { shift->named_arg_token( "context id" ) }
-sub domain_id                { shift->named_arg_token( "domain id" ) }
-
-sub comma {
-    my ( $self ) = @_;
-    $self->fail( "Expected \",\"" ) if !$self->maybe_expect( "," );
-    return;
-}
-
-sub variable { shift->expect( qr/[\w\.]+/ ) }
-
-sub concat_op {
-    my %ops = ( js => "+", pl => ".", tx => "_", py => "+" );
-    return $ops{ shift->type };
-}
-
-sub complex_string {
+sub constant_string {
     my ( $self, @extra_components ) = @_;
 
     my $p = $self->{patterns};
@@ -148,71 +141,53 @@ sub complex_string {
         }
     );
 
-    $self->fail if !@{$string};
+    return join "", @{$string} if @{$string};
 
-    return join "", @{$string};
+    $self->fail;
 }
 
-sub extended_complex_string {
+sub concat_op {
+    my %ops = ( js => "+", pl => ".", tx => "_", py => "+" );
+    return $ops{ shift->type };
+}
+
+sub dynamic_string {
     my ( $self ) = @_;
-    return $self->complex_string( sub { $self->variable } );
+    return $self->constant_string( sub { $self->variable } );
 }
 
 sub double_quote_string_contents {
     my ( $self ) = @_;
-    my $elements = $self->sequence_of(
-        sub {
-            $self->any_of(
-                sub { $self->expect( qr/[^\\"]+/ ); },
-                sub {
-                    $self->expect( qr/\\"/ );
-                    '"';
-                },
-            );
-        }
-    );
-    my $string = join "", @{$elements};
-    return $string if length $string;
-    $self->fail( "no string contents found" );
+    return $self->string_contents( sub { $self->expect( qr/[^\\"]+/ ) }, sub { $self->expect_escaped( q["] ) }, );
 }
 
 sub single_quote_string_contents {
     my ( $self ) = @_;
-    my $elements = $self->sequence_of(
-        sub {
-            $self->any_of(
-                sub { $self->expect( qr/[^\\']+/ ); },
-                sub {
-                    $self->expect( qr/\\'/ );
-                    "'";
-                },
-                sub {
-                    $self->expect( qr/\\\\/ );
-                    "\\";
-                },
-                sub { $self->expect( qr/\\/ ) },
-            );
-        }
+    return $self->string_contents(
+        sub { $self->expect( qr/[^\\']+/ ) },
+        sub { $self->expect_escaped( q['] ) },
+        sub { $self->expect_escaped( q[\\] ) },
+        sub { $self->expect( qr/\\/ ) },
     );
-    my $string = join "", @{$elements};
-    return $string if length $string;
+}
+
+sub string_contents {
+    my ( $self, @contents ) = @_;
+    my $elements = $self->sequence_of( sub { $self->any_of( @contents ) } );
+    return join "", @{$elements} if @{$elements};
     $self->fail( "no string contents found" );
 }
 
-sub report_failure {
-    my ( $self, $f ) = @_;
-    $f->{parser}->report( $f->{message}, $f->{pos} );
-    return;
-}
+sub expect_escaped { $_[0]->expect( qr/\\\Q$_[1]\E/ ); $_[1] }
 
-sub report {
-    my ( $self, $problem, $pos ) = @_;
-    my ( $linenum, $col, $text ) = $self->where( $pos || $self->pos );
+sub warn_failure {
+    my ( $self, $f ) = @_;
+    my ( $linenum, $col, $text ) = $self->where( $f->{pos} || $self->pos );
     my $indent = substr( $text, 0, $col );
     $_ =~ s/\t/    /g for $text, $indent;
     $indent =~ s/./-/g;     # blank out all the non-whitespace
     $text   =~ s/\%/%%/g;
-    $self->debug( "$problem:\n |$text\n |$indent^" );
+    $self->debug( "$f->{message}:\n |$text\n |$indent^" );
     return;
 }
 
