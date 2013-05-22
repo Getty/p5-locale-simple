@@ -43,7 +43,6 @@ sub test_group {
         };
     };
     $res{$_} =~ s/\Q$basedir\E//g for qw(out err);
-    $res{err} =~ s/at [^\s]+Locale\/Simple\/Scraper.pm line \d+/at Scraper.pm/;
     $res{err} =~ s/discarded \d+ characters of noise/discarded COUNT characters of noise/g;
 
     ok_regression(
