@@ -9,16 +9,10 @@ use Moo;
 use Try::Tiny;
 
 has func_qr => ( is => 'ro', default => sub { qr/\bl(|n|p|np|d|dn|dnp)\b/ } );
-has debug_sub => (
-    is      => 'ro',
-    default => sub {
-        sub { shift, warn "- " . sprintf shift . "\n", @_ }
-    }
-);
-has found => ( is => 'ro', default => sub { [] } );
+has found   => ( is => 'ro', default => sub { [] } );
 has type => ( is => 'ro', required => 1 );
 
-sub debug { shift->debug_sub->( @_ ) }
+with "Locale::Simple::Scraper::ParserShortcuts";
 
 sub parse {
     my ( $self ) = @_;
@@ -71,8 +65,6 @@ sub arguments {
     return;
 }
 
-sub expect_string { $_[0]->maybe_expect( "$_[1]" ) or $_[0]->fail( "Expected \"$_[1]\"" ) }
-
 sub extra_arguments {
     my ( $self ) = @_;
     return if !$self->maybe_expect( "," );
@@ -101,11 +93,6 @@ sub required_args_ldnp { shift->collect_from( qw( domain_id          comma  requ
 
 sub plural_args { shift->collect_from( qw( plural_token  comma  plural_count ) ) }
 
-sub collect_from {
-    my ( $self, @methods ) = @_;
-    return map { $self->$_ } @methods;
-}
-
 sub translation_token { shift->named_token( "translation token" ) }
 sub plural_token      { shift->named_token( "plural translation token" ) }
 sub plural_count      { shift->named_token( "count of plural entity", "token_int" ) }
@@ -113,13 +100,6 @@ sub context_id        { shift->named_token( "context id" ) }
 sub domain_id         { shift->named_token( "domain id" ) }
 sub comma             { shift->expect_string( "," ); () }                               # consume, no output
 sub variable          { shift->expect( qr/[\w\.]+/ ) }
-
-sub named_token {
-    my ( $self, $name, $type ) = @_;
-    $type ||= "constant_string";
-    my $token = $self->maybe( sub { $self->$type } ) or $self->fail( "Expected $name" );
-    return $token;
-}
 
 sub constant_string {
     my ( $self, @extra_components ) = @_;
@@ -176,19 +156,6 @@ sub string_contents {
     my $elements = $self->sequence_of( sub { $self->any_of( @contents ) } );
     return join "", @{$elements} if @{$elements};
     $self->fail( "no string contents found" );
-}
-
-sub expect_escaped { $_[0]->expect( qr/\\\Q$_[1]\E/ ); $_[1] }
-
-sub warn_failure {
-    my ( $self, $f ) = @_;
-    my ( $linenum, $col, $text ) = $self->where( $f->{pos} || $self->pos );
-    my $indent = substr( $text, 0, $col );
-    $_ =~ s/\t/    /g for $text, $indent;
-    $indent =~ s/./-/g;     # blank out all the non-whitespace
-    $text   =~ s/\%/%%/g;
-    $self->debug( "$f->{message}:\n |$text\n |$indent^" );
-    return;
 }
 
 1;
