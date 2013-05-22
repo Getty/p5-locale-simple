@@ -31,12 +31,14 @@ sub noise {
 
 sub call {
     my ( $self ) = @_;
+
     my $func = $self->expect( $self->func_qr );
-    $self->debug( "found func $func at line %d", ( $self->where )[0] );
+    my $line = ( $self->where )[0];
+    $self->debug( "found func $func at line %d", $line );
 
     try {
         my $arguments = $self->arguments( $func );
-        push @{ $self->found }, { func => $func, args => $arguments, line => ( $self->where )[0] };
+        push @{ $self->found }, { func => $func, args => $arguments, line => $line };
     }
     catch {
         die $_ if !eval { $_->isa( "Parser::MGC::Failure" ) };
