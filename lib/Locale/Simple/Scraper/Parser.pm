@@ -47,11 +47,12 @@ sub arguments {
     my ( $self, $func ) = @_;
 
     # with_ws forces the debug output to point at the position after the func name
-    $self->with_ws( expect_op => "(" );
-
-    my @arguments = ( $self->required_args( $func ), $self->extra_arguments );
-
-    $self->expect_op( ")" );
+    my @arguments = (
+        $self->with_ws( expect_op => "(" ),    #
+        $self->required_args( $func ),
+        $self->extra_arguments,
+        $self->expect_op( ")" ),
+    );
 
     $self->debug( "found %d arguments", scalar @arguments );
     push @{ $self->found }, { func => $func, args => \@arguments, line => ( $self->where )[0] };
