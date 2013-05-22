@@ -34,7 +34,10 @@ sub call {
     my $func = $self->expect( $self->func_qr );
     $self->debug( "found func $func at line %d", ( $self->where )[0] );
 
-    try { $self->arguments( $func ) }
+    try {
+        my $arguments = $self->arguments( $func );
+        push @{ $self->found }, { func => $func, args => $arguments, line => ( $self->where )[0] };
+    }
     catch {
         die $_ if !eval { $_->isa( "Parser::MGC::Failure" ) };
         $self->warn_failure( $_ );
@@ -53,11 +56,9 @@ sub arguments {
         $self->extra_arguments,
         $self->expect_op( ")" ),
     );
-
     $self->debug( "found %d arguments", scalar @arguments );
-    push @{ $self->found }, { func => $func, args => \@arguments, line => ( $self->where )[0] };
 
-    return;
+    return \@arguments;
 }
 
 sub extra_arguments {
