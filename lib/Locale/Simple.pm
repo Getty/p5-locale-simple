@@ -5,9 +5,10 @@ use strict;
 use warnings;
 
 use Exporter 'import';
+use Locale::TextDomain 1.23 (); # to ensure we get the right version of gettext_dumb
 use Locale::gettext_dumb qw(:locale_h :libintl_h);
 use POSIX qw' setlocale ';
-use IO::All -utf8;
+use IO::All 0.41 -utf8;
 
 our @EXPORT = qw(
 	

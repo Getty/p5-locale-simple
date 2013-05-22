@@ -7,7 +7,6 @@ use Exporter 'import';
 use Getopt::Long;
 use File::Find;
 use Cwd;
-use IO::All;
 use Locale::Simple;
 use Data::Dumper;
 use Locale::Simple::Scraper::Parser;
