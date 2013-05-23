@@ -3,6 +3,8 @@ use warnings;
 
 package Locale::Simple::Scraper::ParserShortcuts;
 
+# ABSTRACT: LSS::Parser methods that are generic shortcuts to P::MGC functionality
+
 use Moo::Role;
 
 has debug_sub => (

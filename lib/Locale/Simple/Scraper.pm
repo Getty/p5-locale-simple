@@ -3,6 +3,8 @@ use warnings;
 
 package Locale::Simple::Scraper;
 
+# ABSTRACT: scraper to find translation tokens in a directory
+
 use Exporter 'import';
 use Getopt::Long;
 use File::Find;

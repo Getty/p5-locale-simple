@@ -3,6 +3,8 @@ use warnings;
 
 package Locale::Simple::Scraper::Parser;
 
+# ABSTRACT: parser to finds translation tokens in a code file
+
 use base qw( Parser::MGC );
 
 use Moo;
