@@ -10,7 +10,7 @@ use Moo::Role;
 has debug_sub => (
     is      => 'ro',
     default => sub {
-        sub { shift, warn "- " . sprintf shift . "\n", @_ }
+        sub { shift, warn "- " . sprintf shift() . "\n", @_ }
     }
 );
 
