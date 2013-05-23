@@ -53,11 +53,16 @@ sub call {
 sub arguments {
     my ( $self, $func ) = @_;
 
-    my @arguments =
-      ( $self->expect_op( "(" ), $self->required_args( $func ), $self->extra_arguments, $self->expect_op( ")" ) );
+    my @arguments = ( $self->op( "(" ), $self->required_args( $func ), $self->extra_arguments, $self->op( ")" ) );
     $self->debug( "found %d arguments", scalar @arguments );
 
     return \@arguments;
+}
+
+sub op {
+    my ( $self, $op ) = @_;
+    return if $self->with_ws( maybe_expect => qr/\s*\Q$op\E/ );
+    $self->fail( "Expected \"$op\"" );
 }
 
 sub extra_arguments {
@@ -88,7 +93,7 @@ sub plural_token { shift->named_token( "plural translation token" ) }
 sub plural_count { shift->named_token( "count of plural entity", "token_int" ) }
 sub context_id   { shift->named_token( "context id" ) }
 sub domain_id    { shift->named_token( "domain id" ) }
-sub comma        { shift->expect_op( "," ) }
+sub comma        { shift->op( "," ) }
 sub variable     { shift->expect( qr/[\w\.]+/ ) }
 
 sub constant_string {

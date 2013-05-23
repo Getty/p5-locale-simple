@@ -16,12 +16,6 @@ has debug_sub => (
 
 sub debug { shift->debug_sub->( @_ ) }
 
-sub expect_op {
-    my ( $self, $op ) = @_;
-    return if $self->with_ws( maybe_expect => qr/\s*\Q$op\E/ );
-    $self->fail( "Expected \"$op\"" );
-}
-
 sub collect_from {
     my ( $self, $methods ) = @_;
     return map { $self->$_ } @{$methods};

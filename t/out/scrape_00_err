@@ -268,37 +268,37 @@ pl => /lib/Locale/Simple/Scraper.pm
 - discarded COUNT characters of noise
 pl => /lib/Locale/Simple/Scraper/Parser.pm
 - discarded COUNT characters of noise
-- found func l at line 75
+- found func l at line 80
 - Expected "(":
  |        l    => [qw( tr_token )],
  |---------^
 - discarded COUNT characters of noise
-- found func ln at line 76
+- found func ln at line 81
 - Expected "(":
  |        ln   => [qw( tr_token    comma  plural_token  comma  plural_count )],
  |----------^
 - discarded COUNT characters of noise
-- found func lp at line 77
+- found func lp at line 82
 - Expected "(":
  |        lp   => [qw( context_id  comma  tr_token )],
  |----------^
 - discarded COUNT characters of noise
-- found func lnp at line 78
+- found func lnp at line 83
 - Expected "(":
  |        lnp  => [qw( context_id  comma  tr_token      comma  plural_token  comma  plural_count )],
  |-----------^
 - discarded COUNT characters of noise
-- found func ld at line 79
+- found func ld at line 84
 - Expected "(":
  |        ld   => [qw( domain_id   comma  tr_token )],
  |----------^
 - discarded COUNT characters of noise
-- found func ldn at line 80
+- found func ldn at line 85
 - Expected "(":
  |        ldn  => [qw( domain_id   comma  tr_token      comma  plural_token  comma  plural_count )],
  |-----------^
 - discarded COUNT characters of noise
-- found func ldnp at line 81
+- found func ldnp at line 86
 - Expected "(":
  |        ldnp => [qw( domain_id   comma  context_id    comma  tr_token      comma  plural_token  comma  plural_count )],
  |------------^
