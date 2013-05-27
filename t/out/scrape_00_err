@@ -552,6 +552,12 @@ tx => /t/data/dummy.tx
 - discarded COUNT characters of noise
 - found func l at line LINE
 - found 2 arguments
+- discarded COUNT characters of noise
+- found func l at line LINE
+- found func l at line LINE
+- found 1 arguments
+- found 3 arguments
+- discarded COUNT characters of noise
 py => /t/data/locale_simple.py
 - discarded COUNT characters of noise
 - found func l at line LINE

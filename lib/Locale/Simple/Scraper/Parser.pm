@@ -107,7 +107,7 @@ sub constant_string {
 
     my $string = $self->list_of( $self->concat_op, $self->c_any_of( @components ) );
 
-    return join "", @{$string} if @{$string};
+    return join "", map { $_ ? $_ : "" } @{$string} if @{$string};
 
     $self->fail;
 }
@@ -119,7 +119,7 @@ sub concat_op {
 
 sub dynamic_string {
     my ( $self ) = @_;
-    return $self->constant_string( $self->curry::variable );
+    return $self->constant_string( $self->curry::call, $self->curry::variable );
 }
 
 sub double_quote_string_contents {
