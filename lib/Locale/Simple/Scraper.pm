@@ -30,17 +30,18 @@ sub scrape {
     my @only;
 
     my $output = 'po';
-    my $md5;
+    my ($md5, $no_line_numbers);
 
     GetOptions(
-        "js=s"     => \$js_ext,
-        "pl=s"     => \$pl_ext,
-        "py=s"     => \$py_ext,
-        "tx=s"     => \$tx_ext,
-        "ignore=s" => \@ignores,
-        "only=s"   => \@only,
-        "output=s" => \$output,
-        "md5"      => \$md5,
+        "js=s"            => \$js_ext,
+        "pl=s"            => \$pl_ext,
+        "py=s"            => \$py_ext,
+        "tx=s"            => \$tx_ext,
+        "ignore=s"        => \@ignores,
+        "only=s"          => \@only,
+        "output=s"        => \$output,
+        "md5"             => \$md5,
+        "no_line_numbers" => \$no_line_numbers,
     );
 
     # could add Getopt::Long here for override
@@ -151,7 +152,7 @@ sub scrape {
         }
         for my $k ( sort { $a cmp $b } keys %files ) {
             print "\n";
-            print "#: " . join( ' ', @{ $files{$k} } ) . "\n";
+            print "#: " . join( ' ', @{ $files{$k} } ) . "\n" if !$no_line_numbers;
             print "#, locale-simple-format";
             print " " . $token{$k}{domain} if defined $token{$k}{domain};
             print "\n";

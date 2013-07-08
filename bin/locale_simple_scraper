@@ -17,6 +17,9 @@
   locale_simple_scraper --output yaml
   locale_simple_scraper --output json
 
+  # supress output of line numbers
+  locale_simple_scraper --no_line_numbers
+
   # scramble real filename with md5 (for security)
   locale_simple_scraper --md5
 
