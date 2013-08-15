@@ -84,4 +84,9 @@ def translate():
             "Hallo Ausserirdischer"
             )
 
+    testeq(
+            l(''),
+            ''
+            )
+
 exit(err)

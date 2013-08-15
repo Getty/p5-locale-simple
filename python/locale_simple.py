@@ -69,6 +69,7 @@ def ldn(td, id, idp, n, *args):
     return ldnp(td,None,id,idp,n,*args)
 
 def ldnp(td, ctxt, id, idp, n, *args):
+    if not len(id): return id
     if not dir or nolocales: _die("please set a locale directory with l_dir() before using other translate functions")
 
     if idp: args = (n,) + args
