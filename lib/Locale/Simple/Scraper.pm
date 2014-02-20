@@ -118,7 +118,7 @@ sub scrape {
                 my $type = $e{$ext};
                 print STDERR $type . " => " . $file . "\n";
                 return if -l $file and not -e readlink( $file );
-                my $parses      = Locale::Simple::Scraper::Parser->new->from_file( $file );
+                my $parses = Locale::Simple::Scraper::Parser->new( type => $type )->from_file( $file );
                 my @file_things = map {
                     {
                         %{ result_from_params( $_->{args}, $f{ $_->{func} } ) },

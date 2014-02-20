@@ -47,9 +47,19 @@ msgstr ""
 msgid "Sie müssen eine eigene Domain eingeben. \"%s\" ist nicht zulässig!"
 msgstr ""
 
+#: /t/data/dummy.tx:2
+#, locale-simple-format
+msgid "Soll der Tarif %s?"
+msgstr ""
+
 #: /t/30-locale-simple-other.t:31
 #, locale-simple-format
 msgid "Umlaut-Test"
+msgstr ""
+
+#: /t/data/dummy.tx:1
+#, locale-simple-format
+msgid "Vertrag gekündigt zum %s"
 msgstr ""
 
 #: /python/test.py:53 /python/test.py:58 /t/20-locale-simple.t:35 /t/20-locale-simple.t:41 /t/21-dryrun.t:38 /t/21-dryrun.t:44

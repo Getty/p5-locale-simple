@@ -1,0 +1,2 @@
+;l("Vertrag gekündigt zum %s", prod.human.kuendigung_zum)
+;l("Soll der Tarif %s?", "<b>" _ product.produktname _ "</b>")

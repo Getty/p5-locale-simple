@@ -16,6 +16,7 @@ has debug_sub => (
     }
 );
 has found => ( is => 'ro', default => sub { [] } );
+has type => ( is => 'ro', required => 1 );
 
 sub debug { shift->debug_sub->( @_ ) }
 
@@ -66,7 +67,12 @@ sub parse_valid_call {
     while ( $self->maybe_expect( "," ) ) {
         my $arg = $self->maybe(
             sub {
-                $self->any_of( sub { $self->complex_string }, sub { $self->token_int }, sub { $self->parse_call } );
+                $self->any_of(
+                    sub { $self->parse_call },
+                    sub { $self->extended_complex_string },
+                    sub { $self->token_int },
+                    sub { $self->variable },
+                );
             }
         );
         last if !$arg;
@@ -115,13 +121,20 @@ sub comma {
     return;
 }
 
+sub variable { shift->expect( qr/[\w\.]+/ ) }
+
+sub concat_op {
+    my %ops = ( js => "+", pl => ".", tx => "_", py => "+" );
+    return $ops{ shift->type };
+}
+
 sub complex_string {
-    my ( $self ) = @_;
+    my ( $self, @extra_components ) = @_;
 
     my $p = $self->{patterns};
 
     my $string = $self->list_of(
-        ".",
+        $self->concat_op,
         sub {
             my $string = $self->any_of(
                 sub {
@@ -129,7 +142,8 @@ sub complex_string {
                 },
                 sub {
                     $self->scope_of( q['], sub { local $p->{ws} = qr//; $self->single_quote_string_contents }, q['] );
-                }
+                },
+                @extra_components,
             );
         }
     );
@@ -137,6 +151,11 @@ sub complex_string {
     $self->fail if !@{$string};
 
     return join "", @{$string};
+}
+
+sub extended_complex_string {
+    my ( $self ) = @_;
+    return $self->complex_string( sub { $self->variable } );
 }
 
 sub double_quote_string_contents {
