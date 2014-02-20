@@ -5,9 +5,10 @@ use strict;
 use warnings;
 
 use Exporter 'import';
+use Locale::TextDomain 1.23 (); # to ensure we get the right version of gettext_dumb
 use Locale::gettext_dumb qw(:locale_h :libintl_h);
 use POSIX qw' setlocale ';
-use IO::All -utf8;
+use IO::All 0.41 -utf8;
 
 our @EXPORT = qw(
 	
@@ -41,6 +42,7 @@ sub l_dry { $dry = shift; $nowrite = shift; $nolocales = 1 if $dry }
 
 sub gettext_escape {
 	my ( $content ) = @_;
+	$content =~ s/\\/\\\\/g;
 	$content =~ s/\n/\\n/g;
 	$content =~ s/"/\\"/g;
 	return $content;

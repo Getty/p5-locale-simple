@@ -3,13 +3,15 @@ use warnings;
 
 package Locale::Simple::Scraper;
 
+# ABSTRACT: scraper to find translation tokens in a directory
+
 use Exporter 'import';
 use Getopt::Long;
 use File::Find;
 use Cwd;
-use IO::All;
 use Locale::Simple;
 use Data::Dumper;
+use Locale::Simple::Scraper::Parser;
 
 our @EXPORT = qw(scrape);
 
@@ -28,17 +30,18 @@ sub scrape {
     my @only;
 
     my $output = 'po';
-    my $md5;
+    my ($md5, $no_line_numbers);
 
     GetOptions(
-        "js=s"     => \$js_ext,
-        "pl=s"     => \$pl_ext,
-        "py=s"     => \$py_ext,
-        "tx=s"     => \$tx_ext,
-        "ignore=s" => \@ignores,
-        "only=s"   => \@only,
-        "output=s" => \$output,
-        "md5"      => \$md5,
+        "js=s"            => \$js_ext,
+        "pl=s"            => \$pl_ext,
+        "py=s"            => \$py_ext,
+        "tx=s"            => \$tx_ext,
+        "ignore=s"        => \@ignores,
+        "only=s"          => \@only,
+        "output=s"        => \$output,
+        "md5"             => \$md5,
+        "no_line_numbers" => \$no_line_numbers,
     );
 
     # could add Getopt::Long here for override
@@ -81,7 +84,7 @@ sub scrape {
         ldnp => [ 4, 3, 1, 2 ],
     );
 
-    my @found;
+    my %files;
 
     my $dir    = getcwd;
     my $re_dir = $dir;
@@ -112,30 +115,28 @@ sub scrape {
             }
             my @fileparts = split( '\.', $File::Find::name );
             my $ext = pop @fileparts;
-            if ( grep { $ext eq $_ } keys %e ) {
-                my $file = $File::Find::name;
-                my $type = $e{$ext};
-                print STDERR $type . " => " . $file . "\n";
-                return if -l $file and not -e readlink( $file );
-                my @lines = io( $file )->slurp;
-                my $line  = 0;
-                for ( @lines ) {
-                    $line++;
-                    my @results = parse_line( $_, $type, \%f );
-                    for ( @results ) {
-                        push @found,
-                          {
-                            %{$_},
-                            line => $line,
-                            file => $stored_filename,
-                            type => $type,
-                          };
-                    }
-                }
-            }
+            $files{$File::Find::name} = [ $ext, $filename, $stored_filename ] if grep { $ext eq $_ } keys %e;
         },
         $dir
     );
+
+    my @found;
+    for my $file ( sort keys %files ) {
+        my ( $ext, $filename, $stored_filename ) = @{ $files{$file} };
+        my $type = $e{$ext};
+        print STDERR $type . " => " . $file . "\n";
+        return if -l $file and not -e readlink( $file );
+        my $parses = Locale::Simple::Scraper::Parser->new( type => $type )->from_file( $file );
+        my @file_things = map {
+            {
+                %{ result_from_params( $_->{args}, $f{ $_->{func} } ) },
+                  line => $_->{line},
+                  file => $stored_filename,
+                  type => $type,
+            }
+        } @{$parses};
+        push @found, @file_things;
+    }
 
     if ( $output eq 'po' ) {
         my %files;
@@ -151,7 +152,7 @@ sub scrape {
         }
         for my $k ( sort { $a cmp $b } keys %files ) {
             print "\n";
-            print "#: " . join( ' ', @{ $files{$k} } ) . "\n";
+            print "#: " . join( ' ', @{ $files{$k} } ) . "\n" if !$no_line_numbers;
             print "#, locale-simple-format";
             print " " . $token{$k}{domain} if defined $token{$k}{domain};
             print "\n";
@@ -197,19 +198,24 @@ sub parse_line {
         my $argc = scalar @args;
         my ( $remainder, @params ) = parse_params( $params, $type, $argc );
         if ( scalar @params == $argc ) {
-            my %result;
-            my $pos = 0;
-            for ( @args ) {
-                $result{msgid}        = $params[$pos] if $_ eq 1;
-                $result{msgid_plural} = $params[$pos] if $_ eq 2;
-                $result{msgctxt}      = $params[$pos] if $_ eq 3;
-                $result{domain}       = $params[$pos] if $_ eq 4;
-                $pos++;
-            }
-            push @results, \%result, parse_line( $remainder, $type, $f );
+            push @results, result_from_params( \@params, \@args ), parse_line( $remainder, $type, $f );
         }
     }
     return @results;
+}
+
+sub result_from_params {
+    my ( $params, $args ) = @_;
+    my %result;
+    my $pos = 0;
+    for ( @{$args} ) {
+        $result{msgid}        = $params->[$pos] if $_ eq 1;
+        $result{msgid_plural} = $params->[$pos] if $_ eq 2;
+        $result{msgctxt}      = $params->[$pos] if $_ eq 3;
+        $result{domain}       = $params->[$pos] if $_ eq 4;
+        $pos++;
+    }
+    return \%result;
 }
 
 sub get_func_params {
