@@ -10,6 +10,11 @@ msgctxt "alien"
 msgid "Hello"
 msgstr ""
 
+#: /t/data/dummy.pl:10
+#, locale-simple-format
+msgid " Sie müssen eine eigene Domain eingeben. \"%s\" ist nicht zulässig. "
+msgstr ""
+
 #: /python/test.py:63 /t/20-locale-simple.t:47
 #, locale-simple-format
 msgid "%2$s brought %1$d message"
@@ -35,11 +40,6 @@ msgstr ""
 #: /python/test.py:78 /t/20-locale-simple.t:65
 #, locale-simple-format
 msgid "Other change order test %s %s %s"
-msgstr ""
-
-#: /t/data/dummy.pl:10
-#, locale-simple-format
-msgid "Sie müssen eine eigene Domain eingeben. \"%s\" ist nicht zulässig."
 msgstr ""
 
 #: /t/30-locale-simple-other.t:31
