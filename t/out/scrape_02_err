@@ -1,2 +1,9 @@
 pl => /t/data/bad.2pl
-comma found after comma in code: "You have %d message",,"You have %d messages",4); at Scraper.pm.
+- found func l at line 1
+- found 1 arguments
+- discarded 2 characters of noise
+- found func ln at line 2
+- Expected ")":
+ |;ln("You have %d message",,"You have %d messages",4);
+ |--------------------------^
+- discarded 28 characters of noise

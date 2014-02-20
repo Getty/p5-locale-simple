@@ -10,6 +10,7 @@ use Cwd;
 use IO::All;
 use Locale::Simple;
 use Data::Dumper;
+use Locale::Simple::Scraper::Parser;
 
 our @EXPORT = qw(scrape);
 
@@ -117,21 +118,16 @@ sub scrape {
                 my $type = $e{$ext};
                 print STDERR $type . " => " . $file . "\n";
                 return if -l $file and not -e readlink( $file );
-                my @lines = io( $file )->slurp;
-                my $line  = 0;
-                for ( @lines ) {
-                    $line++;
-                    my @results = parse_line( $_, $type, \%f );
-                    for ( @results ) {
-                        push @found,
-                          {
-                            %{$_},
-                            line => $line,
-                            file => $stored_filename,
-                            type => $type,
-                          };
+                my $parses      = Locale::Simple::Scraper::Parser->new->from_file( $file );
+                my @file_things = map {
+                    {
+                        %{ result_from_params( $_->{args}, $f{ $_->{func} } ) },
+                          line => $_->{line},
+                          file => $stored_filename,
+                          type => $type,
                     }
-                }
+                } @{$parses};
+                push @found, @file_things;
             }
         },
         $dir
