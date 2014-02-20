@@ -3,7 +3,7 @@ pl => /t/data/bad.2pl
 - found 1 arguments
 - discarded 2 characters of noise
 - found func ln at line 2
-- Expected ")":
+- Expected plural translation token:
  |;ln("You have %d message",,"You have %d messages",4);
  |--------------------------^
 - discarded 28 characters of noise

@@ -60,10 +60,9 @@ sub parse_valid_call {
         $self->fail( "Expected \"(\"" ) if !$self->maybe_expect( "(" );
     }
 
-    my $first_arg = $self->maybe( sub { $self->complex_string } );
-    $self->fail( "Expected an argument" ) if !$first_arg;
+    my $args_method = "parse_req_args_$func";
+    my @arguments   = $self->$args_method;
 
-    my @arguments = ( $first_arg );
     while ( $self->maybe_expect( "," ) ) {
         my $arg = $self->maybe(
             sub {
@@ -79,6 +78,40 @@ sub parse_valid_call {
     $self->debug( "found %d arguments", scalar @arguments );
     push @{ $self->found }, { func => $func, args => \@arguments, line => ( $self->where )[0] };
 
+    return;
+}
+
+sub collect_from {
+    my ( $self, @methods ) = @_;
+    return map { $self->$_ } @methods;
+}
+
+sub parse_req_args_l    { shift->collect_from( qw( translation_token ) ) }
+sub parse_req_args_ln   { shift->collect_from( qw( translation_token  comma  plural_args ) ) }
+sub parse_req_args_lp   { shift->collect_from( qw( context_id         comma  translation_token ) ) }
+sub parse_req_args_lnp  { shift->collect_from( qw( parse_req_args_lp  comma  parse_plural_args ) ) }
+sub parse_req_args_ld   { shift->collect_from( qw( domain_id          comma  translation_token ) ) }
+sub parse_req_args_ldn  { shift->collect_from( qw( domain_id          comma  parse_req_args_ln ) ) }
+sub parse_req_args_ldnp { shift->collect_from( qw( domain_id          comma  parse_req_args_lnp ) ) }
+
+sub plural_args { shift->collect_from( qw( plural_translation_token  comma  plural_count ) ) }
+
+sub named_arg_token {
+    my ( $self, $name, $type ) = @_;
+    $type ||= "complex_string";
+    my $token = $self->maybe( sub { $self->$type } ) or $self->fail( "Expected $name" );
+    return $token;
+}
+
+sub translation_token        { shift->named_arg_token( "translation token" ) }
+sub plural_translation_token { shift->named_arg_token( "plural translation token" ) }
+sub plural_count             { shift->named_arg_token( "count of plural entity", "token_int" ) }
+sub context_id               { shift->named_arg_token( "context id" ) }
+sub domain_id                { shift->named_arg_token( "domain id" ) }
+
+sub comma {
+    my ( $self ) = @_;
+    $self->fail( "Expected \",\"" ) if !$self->maybe_expect( "," );
     return;
 }
 

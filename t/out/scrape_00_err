@@ -43,7 +43,7 @@ pl => /lib/Locale/Simple.pm
  |-----^
 - discarded 10 characters of noise
 - found func l at line 59
-- Expected an argument:
+- Expected translation token:
  |    l => sub { l(@_) },
  |-----------------^
 - discarded 8 characters of noise
@@ -53,7 +53,7 @@ pl => /lib/Locale/Simple.pm
  |------^
 - discarded 10 characters of noise
 - found func ln at line 60
-- Expected an argument:
+- Expected translation token:
  |    ln => sub { ln(@_) },
  |-------------------^
 - discarded 8 characters of noise
@@ -63,7 +63,7 @@ pl => /lib/Locale/Simple.pm
  |------^
 - discarded 10 characters of noise
 - found func lp at line 61
-- Expected an argument:
+- Expected context id:
  |    lp => sub { lp(@_) },
  |-------------------^
 - discarded 8 characters of noise
@@ -73,7 +73,7 @@ pl => /lib/Locale/Simple.pm
  |-------^
 - discarded 10 characters of noise
 - found func lnp at line 62
-- Expected an argument:
+- Expected context id:
  |    lnp => sub { lnp(@_) },
  |---------------------^
 - discarded 8 characters of noise
@@ -83,7 +83,7 @@ pl => /lib/Locale/Simple.pm
  |------^
 - discarded 10 characters of noise
 - found func ld at line 63
-- Expected an argument:
+- Expected domain id:
  |    ld => sub { ld(@_) },
  |-------------------^
 - discarded 8 characters of noise
@@ -93,7 +93,7 @@ pl => /lib/Locale/Simple.pm
  |-------^
 - discarded 10 characters of noise
 - found func ldn at line 64
-- Expected an argument:
+- Expected domain id:
  |    ldn => sub { ldn(@_) },
  |---------------------^
 - discarded 33 characters of noise
@@ -103,12 +103,12 @@ pl => /lib/Locale/Simple.pm
  |--------^
 - discarded 10 characters of noise
 - found func ldnp at line 66
-- Expected an argument:
+- Expected domain id:
  |    ldnp => sub { ldnp(@_) },
  |-----------------------^
 - discarded 506 characters of noise
 - found func l at line 83
-- Expected an argument:
+- Expected translation token:
  |# l(msgid,...)
  |----^
 - discarded 15 characters of noise
@@ -118,12 +118,12 @@ pl => /lib/Locale/Simple.pm
  |-----^
 - discarded 10 characters of noise
 - found func ldnp at line 84
-- Expected an argument:
+- Expected domain id:
  |sub l { return ldnp('',undef,shift,undef,undef,@_) }
  |--------------------^
 - discarded 35 characters of noise
 - found func ln at line 85
-- Expected an argument:
+- Expected translation token:
  |# ln(msgid,msgid_plural,count,...)
  |-----^
 - discarded 34 characters of noise
@@ -133,12 +133,12 @@ pl => /lib/Locale/Simple.pm
  |------^
 - discarded 10 characters of noise
 - found func ldnp at line 86
-- Expected an argument:
+- Expected domain id:
  |sub ln { return ldnp('',undef,@_) }
  |---------------------^
 - discarded 17 characters of noise
 - found func lp at line 87
-- Expected an argument:
+- Expected context id:
  |# lp(msgctxt,msgid,...)
  |-----^
 - discarded 23 characters of noise
@@ -148,12 +148,12 @@ pl => /lib/Locale/Simple.pm
  |------^
 - discarded 10 characters of noise
 - found func ldnp at line 88
-- Expected an argument:
+- Expected domain id:
  |sub lp { return ldnp('',shift,shift,undef,undef,@_) }
  |---------------------^
 - discarded 35 characters of noise
 - found func lnp at line 89
-- Expected an argument:
+- Expected context id:
  |# lnp(msgctxt,msgid,msgid_plural,count,...)
  |------^
 - discarded 42 characters of noise
@@ -163,12 +163,12 @@ pl => /lib/Locale/Simple.pm
  |-------^
 - discarded 10 characters of noise
 - found func ldnp at line 90
-- Expected an argument:
+- Expected domain id:
  |sub lnp { return ldnp('',shift,shift,shift,shift,@_) }
  |----------------------^
 - discarded 35 characters of noise
 - found func ld at line 91
-- Expected an argument:
+- Expected domain id:
  |# ld(domain,msgid,...)
  |-----^
 - discarded 22 characters of noise
@@ -178,12 +178,12 @@ pl => /lib/Locale/Simple.pm
  |------^
 - discarded 10 characters of noise
 - found func ldnp at line 92
-- Expected an argument:
+- Expected domain id:
  |sub ld { return ldnp(shift,undef,shift,undef,undef,@_) }
  |---------------------^
 - discarded 38 characters of noise
 - found func ldn at line 93
-- Expected an argument:
+- Expected domain id:
  |# ldn(domain,msgid,msgid_plural,count,...)
  |------^
 - discarded 41 characters of noise
@@ -193,17 +193,17 @@ pl => /lib/Locale/Simple.pm
  |-------^
 - discarded 10 characters of noise
 - found func ldnp at line 94
-- Expected an argument:
+- Expected domain id:
  |sub ldn { return ldnp(shift,undef,shift,shift,shift,@_) }
  |----------------------^
 - discarded 85 characters of noise
 - found func ldnp at line 96
-- Expected an argument:
+- Expected domain id:
  |sub ldp { return ldnp(shift,shift,shift,undef,undef,@_) }
  |----------------------^
 - discarded 38 characters of noise
 - found func ldnp at line 97
-- Expected an argument:
+- Expected domain id:
  |# ldnp(domain,msgctxt,msgid,msgid_plural,count,...)
  |-------^
 - discarded 49 characters of noise
@@ -267,7 +267,7 @@ pl => /lib/Locale/Simple/Scraper.pm
  |----------------------------^
 - discarded 4994 characters of noise
 pl => /lib/Locale/Simple/Scraper/Parser.pm
-- discarded 4043 characters of noise
+- discarded 5644 characters of noise
 py => /python/locale_simple.py
 - discarded 248 characters of noise
 - found func l at line 12
@@ -291,47 +291,47 @@ py => /python/locale_simple.py
  |--------^
 - discarded 1264 characters of noise
 - found func l at line 62
-- Expected an argument:
+- Expected translation token:
  |def l(id, *args):
  |------^
 - discarded 23 characters of noise
 - found func ldnp at line 63
-- Expected an argument:
+- Expected domain id:
  |    return ldnp('',None,id,None,None,*args)
  |----------------^
 - discarded 32 characters of noise
 - found func ln at line 64
-- Expected an argument:
+- Expected translation token:
  |def ln(id, idp, n, *args):
  |-------^
 - discarded 31 characters of noise
 - found func ldnp at line 65
-- Expected an argument:
+- Expected domain id:
  |    return ldnp('', None, id, idp, n, *args)
  |----------------^
 - discarded 33 characters of noise
 - found func lp at line 66
-- Expected an argument:
+- Expected context id:
  |def lp(ctxt, id, *args):
  |-------^
 - discarded 29 characters of noise
 - found func ldnp at line 67
-- Expected an argument:
+- Expected domain id:
  |    return ldnp('', ctxt, id, None, None, *args)
  |----------------^
 - discarded 37 characters of noise
 - found func ldn at line 68
-- Expected an argument:
+- Expected domain id:
  |def ldn(td, id, idp, n, *args):
  |--------^
 - discarded 35 characters of noise
 - found func ldnp at line 69
-- Expected an argument:
+- Expected domain id:
  |    return ldnp(td,None,id,idp,n,*args)
  |----------------^
 - discarded 29 characters of noise
 - found func ldnp at line 71
-- Expected an argument:
+- Expected domain id:
  |def ldnp(td, ctxt, id, idp, n, *args):
  |---------^
 - discarded 1723 characters of noise
@@ -368,7 +368,7 @@ py => /python/test.py
 - found 2 arguments
 - discarded 77 characters of noise
 - found func l at line 88
-- Expected an argument:
+- Expected translation token:
  |            l(''),
  |--------------^
 - discarded 45 characters of noise
@@ -411,7 +411,7 @@ js => /share/js/locale_simple.js
  |--------^
 - discarded 910 characters of noise
 - found func l at line 270
-- Expected an argument:
+- Expected translation token:
  |function l() { return locale_simple.l.apply(locale_simple,arguments) }
  |-----------^
 - discarded 25 characters of noise
@@ -421,7 +421,7 @@ js => /share/js/locale_simple.js
  |-------------------------------------^
 - discarded 43 characters of noise
 - found func ln at line 271
-- Expected an argument:
+- Expected translation token:
  |function ln() { return locale_simple.ln.apply(locale_simple,arguments) }
  |------------^
 - discarded 25 characters of noise
@@ -431,7 +431,7 @@ js => /share/js/locale_simple.js
  |---------------------------------------^
 - discarded 43 characters of noise
 - found func lp at line 272
-- Expected an argument:
+- Expected context id:
  |function lp() { return locale_simple.lp.apply(locale_simple,arguments) }
  |------------^
 - discarded 25 characters of noise
@@ -441,7 +441,7 @@ js => /share/js/locale_simple.js
  |---------------------------------------^
 - discarded 43 characters of noise
 - found func lnp at line 273
-- Expected an argument:
+- Expected context id:
  |function lnp() { return locale_simple.lnp.apply(locale_simple,arguments) }
  |-------------^
 - discarded 25 characters of noise
@@ -451,7 +451,7 @@ js => /share/js/locale_simple.js
  |-----------------------------------------^
 - discarded 43 characters of noise
 - found func ld at line 274
-- Expected an argument:
+- Expected domain id:
  |function ld() { return locale_simple.ld.apply(locale_simple,arguments) }
  |------------^
 - discarded 25 characters of noise
@@ -461,7 +461,7 @@ js => /share/js/locale_simple.js
  |---------------------------------------^
 - discarded 43 characters of noise
 - found func ldn at line 275
-- Expected an argument:
+- Expected domain id:
  |function ldn() { return locale_simple.ldn.apply(locale_simple,arguments) }
  |-------------^
 - discarded 25 characters of noise
@@ -471,7 +471,7 @@ js => /share/js/locale_simple.js
  |-----------------------------------------^
 - discarded 118 characters of noise
 - found func ldnp at line 277
-- Expected an argument:
+- Expected domain id:
  |function ldnp() { return locale_simple.ldnp.apply(locale_simple,arguments) }
  |--------------^
 - discarded 25 characters of noise
