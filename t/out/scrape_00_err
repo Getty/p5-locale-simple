@@ -261,8 +261,8 @@ pl => /lib/Locale/Simple/Scraper.pm
 - discarded COUNT characters of noise
 - found func l at line LINE
 - Expected "(":
- |                return if -l $file and not -e readlink( $file );
- |----------------------------^
+ |        return if -l $file and not -e readlink( $file );
+ |--------------------^
 - discarded COUNT characters of noise
 pl => /lib/Locale/Simple/Scraper/Parser.pm
 - discarded COUNT characters of noise
@@ -302,6 +302,8 @@ pl => /lib/Locale/Simple/Scraper/Parser.pm
  |------------^
 - discarded COUNT characters of noise
 pl => /lib/Locale/Simple/Scraper/ParserShortcuts.pm
+- discarded COUNT characters of noise
+js => /share/js/gettext/Gettext.js
 - discarded COUNT characters of noise
 js => /share/js/locale_simple.js
 - discarded COUNT characters of noise
@@ -411,8 +413,6 @@ js => /share/js/locale_simple.js
  |-------------------------------------------^
 - discarded COUNT characters of noise
 js => /share/js/sprintf.js
-- discarded COUNT characters of noise
-js => /share/js/gettext/Gettext.js
 - discarded COUNT characters of noise
 pl => /t/10-gettext.t
 - discarded COUNT characters of noise

@@ -83,7 +83,7 @@ sub scrape {
         ldnp => [ 4, 3, 1, 2 ],
     );
 
-    my @found;
+    my %files;
 
     my $dir    = getcwd;
     my $re_dir = $dir;
@@ -114,25 +114,28 @@ sub scrape {
             }
             my @fileparts = split( '\.', $File::Find::name );
             my $ext = pop @fileparts;
-            if ( grep { $ext eq $_ } keys %e ) {
-                my $file = $File::Find::name;
-                my $type = $e{$ext};
-                print STDERR $type . " => " . $file . "\n";
-                return if -l $file and not -e readlink( $file );
-                my $parses = Locale::Simple::Scraper::Parser->new( type => $type )->from_file( $file );
-                my @file_things = map {
-                    {
-                        %{ result_from_params( $_->{args}, $f{ $_->{func} } ) },
-                          line => $_->{line},
-                          file => $stored_filename,
-                          type => $type,
-                    }
-                } @{$parses};
-                push @found, @file_things;
-            }
+            $files{$File::Find::name} = [ $ext, $filename, $stored_filename ] if grep { $ext eq $_ } keys %e;
         },
         $dir
     );
+
+    my @found;
+    for my $file ( sort keys %files ) {
+        my ( $ext, $filename, $stored_filename ) = @{ $files{$file} };
+        my $type = $e{$ext};
+        print STDERR $type . " => " . $file . "\n";
+        return if -l $file and not -e readlink( $file );
+        my $parses = Locale::Simple::Scraper::Parser->new( type => $type )->from_file( $file );
+        my @file_things = map {
+            {
+                %{ result_from_params( $_->{args}, $f{ $_->{func} } ) },
+                  line => $_->{line},
+                  file => $stored_filename,
+                  type => $type,
+            }
+        } @{$parses};
+        push @found, @file_things;
+    }
 
     if ( $output eq 'po' ) {
         my %files;
