@@ -1,0 +1,2 @@
+pl => /t/data/bad.1pl
+quote found where comma expected: "You have %d message"","You have %d messages",4); at Scraper.pm.

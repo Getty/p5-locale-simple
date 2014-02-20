@@ -1,0 +1,19 @@
+py => /setup.py
+pl => /lib/Locale/Simple.pm
+pl => /lib/Locale/Simple/Scraper.pm
+py => /python/locale_simple.py
+py => /python/test.py
+py => /python/__init__.py
+js => /share/js/locale_simple.js
+js => /share/js/sprintf.js
+js => /share/js/gettext/Gettext.js
+pl => /t/10-gettext.t
+pl => /t/11-gettext-simplenumber.t
+pl => /t/20-locale-simple.t
+pl => /t/21-dryrun.t
+pl => /t/22-locale-simple-simplenumber.t
+pl => /t/30-locale-simple-other.t
+pl => /t/40-error.t
+pl => /t/50-scrape.t
+pl => /t/data/dummy.pl
+Unknown escape char 'o' at Scraper.pm.

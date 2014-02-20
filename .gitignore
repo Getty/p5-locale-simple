@@ -4,3 +4,4 @@ build/
 *.pyc
 dist/
 *.egg-info/
+cover_db

@@ -1,0 +1,111 @@
+
+#: /t/data/dummy.pl:9
+#, locale-simple-format dummy
+msgid "mo'ooooo"
+msgstr ""
+
+#: /python/test.py:83 /t/20-locale-simple.t:71
+#, locale-simple-format
+msgctxt "alien"
+msgid "Hello"
+msgstr ""
+
+#: /python/test.py:88
+#, locale-simple-format
+msgid ""
+msgstr ""
+
+#: /python/test.py:63 /t/20-locale-simple.t:47
+#, locale-simple-format
+msgid "%2$s brought %1$d message"
+msgid_plural "%2$s brought %1$d messages"
+msgstr[0] ""
+
+#: /python/test.py:68 /t/20-locale-simple.t:53
+#, locale-simple-format
+msgid "%2$s has %1$d message"
+msgid_plural "%2$s has %1$d messages"
+msgstr[0] ""
+
+#: /python/test.py:73 /t/20-locale-simple.t:59
+#, locale-simple-format
+msgid "Change order test %s %s"
+msgstr ""
+
+#: /lib/Locale/Simple.pm:147 /lib/Locale/Simple.pm:159 /python/test.py:38 /t/20-locale-simple.t:17 /t/21-dryrun.t:20 /t/30-locale-simple-other.t:18 /t/30-locale-simple-other.t:26
+#, locale-simple-format
+msgid "Hello"
+msgstr ""
+
+#: /python/test.py:78 /t/20-locale-simple.t:65
+#, locale-simple-format
+msgid "Other change order test %s %s %s"
+msgstr ""
+
+#: /t/30-locale-simple-other.t:31
+#, locale-simple-format
+msgid "Umlaut-Test"
+msgstr ""
+
+#: /python/test.py:53 /python/test.py:58 /t/20-locale-simple.t:35 /t/20-locale-simple.t:41 /t/21-dryrun.t:38 /t/21-dryrun.t:44
+#, locale-simple-format
+msgid "You have %d message of %s"
+msgid_plural "You have %d messages of %s"
+msgstr[0] ""
+
+#: /lib/Locale/Simple.pm:148 /lib/Locale/Simple.pm:160 /python/test.py:43 /python/test.py:48 /t/20-locale-simple.t:23 /t/20-locale-simple.t:29 /t/21-dryrun.t:26 /t/21-dryrun.t:32
+#, locale-simple-format
+msgid "You have %d message"
+msgid_plural "You have %d messages"
+msgstr[0] ""
+
+#: /t/22-locale-simple-simplenumber.t:16 /t/22-locale-simple-simplenumber.t:22
+#, locale-simple-format
+msgid "You have a message"
+msgid_plural "You have some messages"
+msgstr[0] ""
+
+#: /t/data/dummy.pl:2
+#, locale-simple-format
+msgid "mo\"o"
+msgstr ""
+
+#: /t/data/dummy.pl:3
+#, locale-simple-format
+msgid "mo\"oo"
+msgstr ""
+
+#: /t/data/dummy.pl:7
+#, locale-simple-format
+msgid "mo\"ooooo"
+msgstr ""
+
+#: /t/data/dummy.pl:4
+#, locale-simple-format
+msgid "mo'ooo"
+msgstr ""
+
+#: /t/data/dummy.pl:8
+#, locale-simple-format
+msgid "mo'ooooo"
+msgstr ""
+
+#: /t/data/dummy.pl:6
+#, locale-simple-format
+msgid "mo\oooo"
+msgstr ""
+
+#: /t/data/dummy.pl:1
+#, locale-simple-format
+msgid "moo"
+msgstr ""
+
+#: /t/data/dummy.pl:5
+#, locale-simple-format
+msgid "moooo"
+msgstr ""
+
+#: /t/40-error.t:19 /t/40-error.t:27
+#, locale-simple-format
+msgid "test"
+msgstr ""
