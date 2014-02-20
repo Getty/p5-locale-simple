@@ -4,7 +4,7 @@
 msgid "mo'ooooo"
 msgstr ""
 
-#: /python/test.py:83 /t/20-locale-simple.t:71
+#: /t/20-locale-simple.t:71 /t/data/test.py:83
 #, locale-simple-format
 msgctxt "alien"
 msgid "Hello"
@@ -15,29 +15,29 @@ msgstr ""
 msgid " Sie müssen eine eigene Domain eingeben. \"%s\" ist nicht zulässig. "
 msgstr ""
 
-#: /python/test.py:63 /t/20-locale-simple.t:47
+#: /t/20-locale-simple.t:47 /t/data/test.py:63
 #, locale-simple-format
 msgid "%2$s brought %1$d message"
 msgid_plural "%2$s brought %1$d messages"
 msgstr[0] ""
 
-#: /python/test.py:68 /t/20-locale-simple.t:53
+#: /t/20-locale-simple.t:53 /t/data/test.py:68
 #, locale-simple-format
 msgid "%2$s has %1$d message"
 msgid_plural "%2$s has %1$d messages"
 msgstr[0] ""
 
-#: /python/test.py:73 /t/20-locale-simple.t:59
+#: /t/20-locale-simple.t:59 /t/data/test.py:73
 #, locale-simple-format
 msgid "Change order test %s %s"
 msgstr ""
 
-#: /lib/Locale/Simple.pm:149 /lib/Locale/Simple.pm:161 /python/test.py:38 /t/20-locale-simple.t:17 /t/21-dryrun.t:20 /t/30-locale-simple-other.t:18 /t/30-locale-simple-other.t:26
+#: /lib/Locale/Simple.pm:LINE /lib/Locale/Simple.pm:LINE /t/20-locale-simple.t:17 /t/21-dryrun.t:20 /t/30-locale-simple-other.t:18 /t/30-locale-simple-other.t:26 /t/data/test.py:38
 #, locale-simple-format
 msgid "Hello"
 msgstr ""
 
-#: /python/test.py:78 /t/20-locale-simple.t:65
+#: /t/20-locale-simple.t:65 /t/data/test.py:78
 #, locale-simple-format
 msgid "Other change order test %s %s %s"
 msgstr ""
@@ -62,13 +62,13 @@ msgstr ""
 msgid "Vertrag gekündigt zum %s"
 msgstr ""
 
-#: /python/test.py:53 /python/test.py:58 /t/20-locale-simple.t:35 /t/20-locale-simple.t:41 /t/21-dryrun.t:38 /t/21-dryrun.t:44
+#: /t/20-locale-simple.t:35 /t/20-locale-simple.t:41 /t/21-dryrun.t:38 /t/21-dryrun.t:44 /t/data/test.py:53 /t/data/test.py:58
 #, locale-simple-format
 msgid "You have %d message of %s"
 msgid_plural "You have %d messages of %s"
 msgstr[0] ""
 
-#: /lib/Locale/Simple.pm:150 /lib/Locale/Simple.pm:162 /python/test.py:43 /python/test.py:48 /t/20-locale-simple.t:23 /t/20-locale-simple.t:29 /t/21-dryrun.t:26 /t/21-dryrun.t:32
+#: /lib/Locale/Simple.pm:LINE /lib/Locale/Simple.pm:LINE /t/20-locale-simple.t:23 /t/20-locale-simple.t:29 /t/21-dryrun.t:26 /t/21-dryrun.t:32 /t/data/test.py:43 /t/data/test.py:48
 #, locale-simple-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
