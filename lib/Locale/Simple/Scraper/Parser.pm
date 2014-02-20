@@ -63,7 +63,7 @@ sub parse_valid_call {
     while ( $self->maybe_expect( "," ) ) {
         my $arg = $self->maybe(
             sub {
-                $self->any_of( sub { $self->complex_string }, sub { $self->token_int } );
+                $self->any_of( sub { $self->complex_string }, sub { $self->token_int }, sub { $self->parse_call } );
             }
         );
         last if !$arg;
