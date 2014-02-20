@@ -118,18 +118,25 @@ sub comma {
 sub complex_string {
     my ( $self ) = @_;
 
-    my $patterns = $self->{patterns};
+    my $p = $self->{patterns};
 
-    my $string = $self->any_of(
+    my $string = $self->list_of(
+        ".",
         sub {
-            $self->scope_of( q["], sub { local $patterns->{ws} = qr//; $self->double_quote_string_contents }, q["] );
-        },
-        sub {
-            $self->scope_of( q['], sub { local $patterns->{ws} = qr//; $self->single_quote_string_contents }, q['] );
+            my $string = $self->any_of(
+                sub {
+                    $self->scope_of( q["], sub { local $p->{ws} = qr//; $self->double_quote_string_contents }, q["] );
+                },
+                sub {
+                    $self->scope_of( q['], sub { local $p->{ws} = qr//; $self->single_quote_string_contents }, q['] );
+                }
+            );
         }
     );
 
-    return $string;
+    $self->fail if !@{$string};
+
+    return join "", @{$string};
 }
 
 sub double_quote_string_contents {

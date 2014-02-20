@@ -42,6 +42,11 @@ msgstr ""
 msgid "Other change order test %s %s %s"
 msgstr ""
 
+#: /t/data/dummy.pl:11
+#, locale-simple-format
+msgid "Sie müssen eine eigene Domain eingeben. \"%s\" ist nicht zulässig!"
+msgstr ""
+
 #: /t/30-locale-simple-other.t:31
 #, locale-simple-format
 msgid "Umlaut-Test"

@@ -267,7 +267,7 @@ pl => /lib/Locale/Simple/Scraper.pm
  |----------------------------^
 - discarded 4994 characters of noise
 pl => /lib/Locale/Simple/Scraper/Parser.pm
-- discarded 5745 characters of noise
+- discarded 5910 characters of noise
 py => /python/locale_simple.py
 - discarded 248 characters of noise
 - found func l at line 12
@@ -602,4 +602,7 @@ pl => /t/data/dummy.pl
 - found func l at line 10
 - found func l at line 10
 - found 1 arguments
+- found 1 arguments
+- discarded 2 characters of noise
+- found func l at line 11
 - found 1 arguments
