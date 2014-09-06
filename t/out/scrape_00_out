@@ -27,7 +27,7 @@ msgid "%2$s has %1$d message"
 msgid_plural "%2$s has %1$d messages"
 msgstr[0] ""
 
-#: /t/data/dummy.tx:3
+#: /t/data/dummy.tx:4
 #, locale-simple-format
 msgid "/unternehmen/kundeninformationen/agb-verbraucher/#widerrufsrecht"
 msgstr ""
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Sie müssen eine eigene Domain eingeben. \"%s\" ist nicht zulässig!"
 msgstr ""
 
-#: /t/data/dummy.tx:2
+#: /t/data/dummy.tx:2 /t/data/dummy.tx:3
 #, locale-simple-format
 msgid "Soll der Tarif %s?"
 msgstr ""
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Umlaut-Test"
 msgstr ""
 
-#: /t/data/dummy.tx:3
+#: /t/data/dummy.tx:4
 #, locale-simple-format
 msgid "Verbraucher können ihre Vertragserklärung innerhalb von zwei Wochen ohne Angabe von Gründen in Textform (z. B. Brief, Fax, E-Mail) widerrufen. Hier finden Sie die %s Einzelheiten zu Ihrem Widerrufsrecht %s."
 msgstr ""

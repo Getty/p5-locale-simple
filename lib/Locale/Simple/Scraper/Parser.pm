@@ -113,7 +113,7 @@ sub constant_string {
 }
 
 sub concat_op {
-    my %ops = ( js => "+", pl => ".", tx => "_", py => "+" );
+    my %ops = ( js => "+", pl => ".", tx => qr/(_|~)/, py => "+" );
     return $ops{ shift->type };
 }
 
